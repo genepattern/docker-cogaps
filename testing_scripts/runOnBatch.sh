@@ -1,5 +1,8 @@
 #!/bin/sh
 
+: ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
+
+
 S3_ROOT=s3://moduleiotest
 S3_ROOT=s3://moduleiotest
 JOB_QUEUE=TedTest
@@ -29,6 +32,7 @@ REMOTE_COMMAND="runS3OnBatch.sh $TASKLIB $INPUT_FILE_DIRECTORIES $S3_ROOT $WORKI
 aws s3 sync $INPUT_FILE_DIRECTORIES $S3_ROOT$INPUT_FILE_DIRECTORIES --profile genepattern
 aws s3 sync $TASKLIB $S3_ROOT$TASKLIB --profile genepattern
 aws s3 sync $WORKING_DIR $S3_ROOT$WORKING_DIR --profile genepattern 
+aws s3 sync $GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR --profile genepattern 
 
 ######### end new part for script #################################################
 
@@ -38,7 +42,7 @@ aws s3 sync $WORKING_DIR $S3_ROOT$WORKING_DIR --profile genepattern
 aws batch submit-job \
       --job-name $JOB_ID \
       --job-queue $JOB_QUEUE \
-      --container-overrides 'memory=3600' \
+      --container-overrides 'memory=3600,environment=[{name='GP_METADATA_DIR',value='$WORKING_DIR/meta'}] " \
       --job-definition $JOB_DEFINITION_NAME \
       --parameters taskLib=$TASKLIB,inputFileDirectory=$INPUT_FILE_DIRECTORIES,s3_root=$S3_ROOT,working_dir=$WORKING_DIR,exe1="$REMOTE_COMMAND"  \
       --profile genepattern
