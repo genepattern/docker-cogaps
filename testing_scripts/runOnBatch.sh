@@ -6,6 +6,8 @@
 S3_ROOT=s3://moduleiotest
 S3_ROOT=s3://moduleiotest
 JOB_QUEUE=TedTest
+: ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
+
 
 cd $TEST_ROOT
 
@@ -42,7 +44,7 @@ aws s3 sync $GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR --profile genepattern
 aws batch submit-job \
       --job-name $JOB_ID \
       --job-queue $JOB_QUEUE \
-      --container-overrides 'memory=3600,environment=[{name='GP_METADATA_DIR',value='$WORKING_DIR/meta'}] " \
+      --container-overrides 'memory=3600,environment=[{name='GP_METADATA_DIR',value='$GP_METADATA_DIR'}] " \
       --job-definition $JOB_DEFINITION_NAME \
       --parameters taskLib=$TASKLIB,inputFileDirectory=$INPUT_FILE_DIRECTORIES,s3_root=$S3_ROOT,working_dir=$WORKING_DIR,exe1="$REMOTE_COMMAND"  \
       --profile genepattern
