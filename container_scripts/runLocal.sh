@@ -10,9 +10,10 @@ EXECUTABLE=$5
 #
 # assign filenames for STDOUT and STDERR if not already set
 #
-: ${STDOUT_FILENAME=.gp_metadata/stdout.txt}
-: ${STDERR_FILENAME=.gp_metadata/stderr.txt}
-: ${EXITCODE_FILENAME=.gp_metadata/exit_code.txt}
+: ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
+: ${STDOUT_FILENAME=$GP_METADATA_DIR/stdout.txt}
+: ${STDERR_FILENAME=$GP_METADATA_DIR/stderr.txt}
+: ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
 
 # echo out params
 echo working dir is  -$WORKING_DIR- 
