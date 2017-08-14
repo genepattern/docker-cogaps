@@ -1,13 +1,11 @@
 #!/bin/sh
 
+# set gp_metadata if unset
 : ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
 
 
-S3_ROOT=s3://moduleiotest
 S3_ROOT=s3://moduleiotest
 JOB_QUEUE=TedTest
-: ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
-
 
 cd $TEST_ROOT
 
@@ -15,7 +13,7 @@ cd $TEST_ROOT
 # Make the input file directory since we need to put the script to execute in it
 mkdir -p $GP_METADATA_DIR
 
-EXEC_SHELL=$WORKING_DIR/.gp_metadata/exec.sh
+EXEC_SHELL=$GP_METADATA_DIR/exec.sh
 
 echo "#!/bin/bash\n" > $EXEC_SHELL
 #echo "echo \"$COMMAND_LINE\"" >>$EXEC_SHELL
