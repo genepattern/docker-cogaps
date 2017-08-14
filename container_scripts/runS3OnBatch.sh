@@ -17,10 +17,15 @@ EXECUTABLE=$5
 
 # echo out params
 echo working dir is  -$WORKING_DIR- 
+echo metadata dir is: -$GP_METADATA_DIR-
 echo Task dir is -$TASKLIB-
 echo executable is -$5-
 echo S3_ROOT is -$S3_ROOT-
 echo input files location  is -$INPUT_FILES_DIR-
+
+echo STDOUT is -$STDOUT_FILENAME-
+echo STDERR is -$STDERR_FILENAME-
+
 
 # copy the source over from tasklib
 mkdir -p $TASKLIB

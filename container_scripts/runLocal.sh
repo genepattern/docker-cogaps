@@ -21,6 +21,7 @@ echo Task dir is -$TASKLIB-
 echo executable is -$5-
 echo S3_ROOT is -$S3_ROOT-
 echo input files location  is -$INPUT_FILES_DIR-
+echo STDOUT is $STDOUT_FILENAME
 
 cd $WORKING_DIR
 

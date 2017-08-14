@@ -14,13 +14,13 @@ S3_ROOT=s3://moduleiotest
 
 : ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
 
-
 # ##### NEW PART FOR SCRIPT INSTEAD OF COMMAND LINE ################################
 # Make the input file directory since we need to put the script to execute in it
 cd $TEST_ROOT
 mkdir -p $WORKING_DIR
-mkdir -p $WORKING_DIR/.gp_metadata
-EXEC_SHELL=$WORKING_DIR/.gp_metadata/local_exec.sh
+mkdir -p $GP_METADATA_DIR
+
+EXEC_SHELL=$GP_METADATA_DIR/local_exec.sh
 
 echo "#!/bin/bash\n" > $EXEC_SHELL
 echo $COMMAND_LINE >>$EXEC_SHELL
