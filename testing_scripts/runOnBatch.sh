@@ -1,21 +1,21 @@
 #!/bin/sh
 
+# set gp_metadata if unset
 : ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
+: ${STDOUT_FILENAME=stdout.txt}
+: ${STDERR_FILENAME=stderr.txt}
+: ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
 
-
-S3_ROOT=s3://moduleiotest
 S3_ROOT=s3://moduleiotest
 JOB_QUEUE=TedTest
-: ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
-
 
 cd $TEST_ROOT
 
 # ##### NEW PART FOR SCRIPT INSTEAD OF COMMAND LINE ################################
 # Make the input file directory since we need to put the script to execute in it
-mkdir -p $WORKING_DIR/.gp_metadata
+mkdir -p $GP_METADATA_DIR
 
-EXEC_SHELL=$WORKING_DIR/.gp_metadata/exec.sh
+EXEC_SHELL=$GP_METADATA_DIR/exec.sh
 
 echo "#!/bin/bash\n" > $EXEC_SHELL
 #echo "echo \"$COMMAND_LINE\"" >>$EXEC_SHELL
@@ -25,7 +25,7 @@ echo "\n " >>$EXEC_SHELL
 chmod a+rwx $EXEC_SHELL
 chmod -R a+rwx $WORKING_DIR
 
-REMOTE_COMMAND="runS3OnBatch.sh $TASKLIB $INPUT_FILE_DIRECTORIES $S3_ROOT $WORKING_DIR $EXEC_SHELL"
+REMOTE_COMMAND=$EXEC_SHELL
 # note the batch submit now uses REMOTE_COMMAND instead of COMMAND_LINE 
 
 #
@@ -44,7 +44,7 @@ aws s3 sync $GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR --profile genepattern
 aws batch submit-job \
       --job-name $JOB_ID \
       --job-queue $JOB_QUEUE \
-      --container-overrides 'memory=3600,environment=[{name='GP_METADATA_DIR',value='$GP_METADATA_DIR'}] " \
+      --container-overrides "memory=3600,environment=[{name=GP_METADATA_DIR,value=$GP_METADATA_DIR},{name=STDOUT_FILENAME,value=$STDOUT_FILENAME},{name=STDERR_FILENAME,value=$STDERR_FILENAME},{name=EXITCODE_FILENAME,value=$EXITCODE_FILENAME}]"  \
       --job-definition $JOB_DEFINITION_NAME \
       --parameters taskLib=$TASKLIB,inputFileDirectory=$INPUT_FILE_DIRECTORIES,s3_root=$S3_ROOT,working_dir=$WORKING_DIR,exe1="$REMOTE_COMMAND"  \
       --profile genepattern

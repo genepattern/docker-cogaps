@@ -15,12 +15,17 @@ EXECUTABLE=$5
 : ${STDERR_FILENAME=$GP_METADATA_DIR/stderr.txt}
 : ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
 
-# echo out params
+# echo out params, this should end up only in the cloudwatch logs
 echo working dir is  -$WORKING_DIR- 
+echo metadata dir is: -$GP_METADATA_DIR-
 echo Task dir is -$TASKLIB-
 echo executable is -$5-
 echo S3_ROOT is -$S3_ROOT-
 echo input files location  is -$INPUT_FILES_DIR-
+
+echo STDOUT_FILENAME is -$STDOUT_FILENAME-
+echo STDERR_FILENAME is -$STDERR_FILENAME-
+echo EXITCODE_FILENAME is -$EXITCODE_FILENAME-
 
 # copy the source over from tasklib
 mkdir -p $TASKLIB
