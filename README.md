@@ -10,13 +10,16 @@ https://help.github.com/articles/splitting-a-subfolder-out-into-a-new-repository
 
 
 git remote add common-aws https://github.com/genepattern/docker-aws-common-scripts.git
+
 git subtree add --prefix common common-aws master
 
 
 # to update from this repo
+
 git subtree pull --prefix common common-aws master --squash
 
 # or if you did not add the remote
+
 git subtree pull --prefix common  https://github.com/genepattern/docker-aws-common-scripts.git  master --squash
 
 
@@ -25,5 +28,8 @@ git subtree pull --prefix common  https://github.com/genepattern/docker-aws-comm
 
 git subtree push --prefix common common-aws push-from-docker-java17
 
+# to register a new or update a job definition when in a folder with the jobdef.json file 
+
+aws batch register-job-definition --cli-input-json file://jobdef.json  --profile genepattern
 
 
