@@ -6,8 +6,8 @@
 : ${STDERR_FILENAME=stderr.txt}
 : ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
 
-S3_ROOT=s3://moduleiotest
-JOB_QUEUE=TedTest
+: ${S3_ROOT=s3://moduleiotest}
+: ${JOB_QUEUE=TedTest}
 
 cd $TEST_ROOT
 
