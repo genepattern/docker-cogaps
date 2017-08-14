@@ -14,6 +14,7 @@
 : ${STDERR_FILENAME=stderr.txt}
 : ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
 : ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
+: ${S3_ROOT=s3://moduleiotest}
 
 # ##### NEW PART FOR SCRIPT INSTEAD OF COMMAND LINE ################################
 # Make the input file directory since we need to put the script to execute in it
