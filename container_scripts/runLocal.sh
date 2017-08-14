@@ -11,8 +11,8 @@ EXECUTABLE=$5
 # assign filenames for STDOUT and STDERR if not already set
 #
 : ${GP_METADATA_DIR=$WORKING_DIR/.gp_metadata}
-: ${STDOUT_FILENAME=$GP_METADATA_DIR/stdout.txt}
-: ${STDERR_FILENAME=$GP_METADATA_DIR/stderr.txt}
+: ${STDOUT_FILENAME=stdout.txt}
+: ${STDERR_FILENAME=stderr.txt}
 : ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
 
 # echo out params
@@ -32,7 +32,8 @@ shift
 shift
 
 echo "========== DEBUG inside container ================="
-echo $@
+echo $@  >$STDOUT_FILENAME 2>$STDERR_FILENAME
+echo "{ \"exit_code\": $? }">$EXITCODE_FILENAME
 echo "====== END DEBUG ================="
 
 "$@"  >$STDOUT_FILENAME 2>$STDERR_FILENAME
