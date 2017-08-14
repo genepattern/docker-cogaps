@@ -13,7 +13,7 @@ cd $TEST_ROOT
 
 # ##### NEW PART FOR SCRIPT INSTEAD OF COMMAND LINE ################################
 # Make the input file directory since we need to put the script to execute in it
-mkdir -p $WORKING_DIR/.gp_metadata
+mkdir -p $GP_METADATA_DIR
 
 EXEC_SHELL=$WORKING_DIR/.gp_metadata/exec.sh
 
@@ -44,7 +44,7 @@ aws s3 sync $GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR --profile genepattern
 aws batch submit-job \
       --job-name $JOB_ID \
       --job-queue $JOB_QUEUE \
-      --container-overrides 'memory=3600,environment=[{name='GP_METADATA_DIR',value='$GP_METADATA_DIR'}] " \
+      --container-overrides "memory=3600,environment=[{name='GP_METADATA_DIR',value='./job12/meta'}] " \
       --job-definition $JOB_DEFINITION_NAME \
       --parameters taskLib=$TASKLIB,inputFileDirectory=$INPUT_FILE_DIRECTORIES,s3_root=$S3_ROOT,working_dir=$WORKING_DIR,exe1="$REMOTE_COMMAND"  \
       --profile genepattern
