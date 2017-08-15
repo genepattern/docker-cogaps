@@ -43,10 +43,14 @@ ls $INPUT_FILES_DIR
 # switch to the working directory and sync it up
 echo "3. PERFORMING aws s3 sync $S3_ROOT$WORKING_DIR $WORKING_DIR "
 aws s3 sync $S3_ROOT$WORKING_DIR $WORKING_DIR --quiet
-aws s3 sync $S3_ROOT$GP_METADATA_DIR $GP_METADATA_DIR --quiet
-chmod a+rwx $GP_METADATA_DIR/*
+
+echo "3a synching gp_metadata_dir"
+aws s3 sync $S3_ROOT$GP_METADATA_DIR $GP_METADATA_DIR 
 
 cd $WORKING_DIR
+echo "3b. chmodding $GP_METADATA_DIR from $PWD"
+chmod a+rwx $GP_METADATA_DIR/*
+
 
 # run the module
 echo "4. PERFORMING $5"
