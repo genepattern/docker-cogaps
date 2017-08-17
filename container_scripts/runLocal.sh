@@ -23,6 +23,18 @@ echo S3_ROOT is -$S3_ROOT-
 echo input files location  is -$INPUT_FILES_DIR-
 echo STDOUT is $STDOUT_FILENAME
 
+##################################################
+# MODIFICATION FOR R PACKAGE INSTALLATION
+##################################################
+if [[ -f "$TASKLIB/r.package.info"  && -f "/build/source/installPackages.R" ]]
+then
+        echo "Installing R packages from $TASKLIB/r.package.info."
+        Rscript /build/source/installPackages.R $TASKLIB/r.package.info
+else
+        echo "No R packages installed. $TASKLIB/r.package.info not found."
+fi
+
+
 cd $WORKING_DIR
 
 # run the module
