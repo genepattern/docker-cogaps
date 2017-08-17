@@ -75,7 +75,7 @@ aws s3 sync  $GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR --quiet
 #
 # allow customization for specific images - eg to save RLIBS back to S3 for reuse
 #
-if [ -f "/usr/local/bin/runS3Batch_postrun_custom.sh" ] then
+if [ -f "/usr/local/bin/runS3Batch_postrun_custom.sh" ]; then
    . /usr/local/bin/runS3Batch_postrun_custom.sh
 fi
 
