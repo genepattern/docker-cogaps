@@ -33,14 +33,6 @@ echo "1. PERFORMING AWS SYNC $S3_ROOT$TASKLIB $TASKLIB"
 aws s3 sync $S3_ROOT$TASKLIB $TASKLIB --quiet
 ls $TASKLIB
 
-#
-# allow customization for specific images - eg to install RLIBs
-#
-if [ -f "/usr/local/bin/runS3Batch_prerun_custom.sh" ]; then
-   . /usr/local/bin/runS3Batch_prerun_custom.sh
-fi
-
- 
 # copy the inputs
 mkdir -p $INPUT_FILES_DIR
 echo "2. PERFORMING aws s3 sync $S3_ROOT$INPUT_FILES_DIR $INPUT_FILES_DIR"
@@ -57,6 +49,14 @@ aws s3 sync $S3_ROOT$GP_METADATA_DIR $GP_METADATA_DIR
 cd $WORKING_DIR
 echo "3b. chmodding $GP_METADATA_DIR from $PWD"
 chmod a+rwx $GP_METADATA_DIR/*
+
+
+#
+# allow customization for specific images - eg to install RLIBs
+#
+if [ -f "/usr/local/bin/runS3Batch_prerun_custom.sh" ]; then
+   . /usr/local/bin/runS3Batch_prerun_custom.sh
+fi
 
 
 # run the module
