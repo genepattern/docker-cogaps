@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# &copy; 2017-2018 Regents of the University of California and the Broad Institute. All rights reserved.
+#
 
 #
 # these three variables should be set by the calling script
