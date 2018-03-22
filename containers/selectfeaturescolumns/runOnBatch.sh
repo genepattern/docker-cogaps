@@ -1,4 +1,5 @@
 #!/bin/sh
-. runConfig.sh
-. runOnBatchInner.sh
+echo "Config for $i -- $@"
+. runConfig.sh $@
+. runOnBatchInner.sh $@
 

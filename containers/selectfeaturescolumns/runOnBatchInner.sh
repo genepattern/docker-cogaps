@@ -20,11 +20,19 @@ mkdir -p $GP_METADATA_DIR
 
 EXEC_SHELL=$GP_METADATA_DIR/exec.sh
 echo "#!/bin/bash\n" > $EXEC_SHELL
+echo " cd $WORKING_DIR  " >> $EXEC_SHELL
+echo "\n" >> $EXEC_SHELL
+
+echo "# add stuff here to run on innermost conainer  " >> $EXEC_SHELL
+echo "\n" >> $EXEC_SHELL
+
 echo $COMMAND_LINE >>$EXEC_SHELL 
 echo "\n " >>$EXEC_SHELL 
 chmod a+rwx $EXEC_SHELL
 chmod -R a+rwx $WORKING_DIR
 REMOTE_COMMAND=$EXEC_SHELL
+
+#echo "wrote $EXEC_SHELL"
 
 #
 # Copy the input files to S3 using the same path

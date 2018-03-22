@@ -33,11 +33,11 @@ mkdir -p $LOCAL_DIR/Users/liefeld/GenePattern
 : ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
 
 # echo out params
-echo DIND Task dir is -$TASKLIB-   $1
-echo DIND input files location  is -$INPUT_FILES_DIR-  $2
-echo DIND S3_ROOT is -$S3_ROOT-  $3
-echo DIND working dir is  -$WORKING_DIR-  $4
-echo DIND executable is -$5-  
+#echo DIND Task dir is -$TASKLIB-   $1
+#echo DIND input files location  is -$INPUT_FILES_DIR-  $2
+#echo DIND S3_ROOT is -$S3_ROOT-  $3
+#echo DIND working dir is  -$WORKING_DIR-  $4
+#echo DIND executable is -$5-  
 chmod a+x $5
 
 # copy the source over from tasklib
@@ -52,6 +52,11 @@ echo "2. PERFORMING aws s3 sync $S3_ROOT$INPUT_FILES_DIR $LOCAL_DIR/$INPUT_FILES
 aws s3 sync $S3_ROOT$INPUT_FILES_DIR $LOCAL_DIR/$INPUT_FILES_DIR --quiet
 ls $LOCAL_DIR/$INPUT_FILES_DIR
 
+echo "=========  what data is on this machine =========="
+find $LOCAL_DIR -name "test_*" 
+echo "========= what containers are running "
+docker ps
+
 # switch to the working directory and sync it up
 echo "3. PERFORMING aws s3 sync $S3_ROOT$WORKING_DIR $LOCAL_DIR/$WORKING_DIR "
 aws s3 sync $S3_ROOT$WORKING_DIR $LOCAL_DIR/$WORKING_DIR --quiet
@@ -61,7 +66,7 @@ aws s3 sync $S3_ROOT$GP_METADATA_DIR $LOCAL_DIR/$GP_METADATA_DIR
 
 cd $LOCAL_DIR/$WORKING_DIR
 echo "3b. chmodding $GP_METADATA_DIR from $PWD"
-chmod a+rwx $GP_METADATA_DIR/*
+chmod a+rwx $LOCAL_DIR/$GP_METADATA_DIR/*
 ls -alrt
 
 echo "========== S3 copies in complete, DEBUG inside 1st container ================="
@@ -86,12 +91,6 @@ aws s3 sync  $LOCAL_DIR/$GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR --quiet
 #   . /usr/local/bin/runS3Batch_postrun_custom.sh
 #fi
 
-echo "======== volume exploration ====="
-ls /job
-df -h /job
-ls > /job/foo.txt
-ls /job
-du -h /job
 
 
 
