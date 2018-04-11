@@ -10,7 +10,6 @@ S3_ROOT="$(echo -e "${3}" | tr -d '[:space:]')"
 WORKING_DIR="$(echo -e "${4}" | tr -d '[:space:]')"
 EXECUTABLE=$5
 
-
 # make a directory into which we will S3 sync everything we have had passed in to the 'outer' container
 # this will NOT be at the same path as on the GP head node and the compute node, but it will be mounted to the
 # inner container using the same path as on the head node
@@ -22,7 +21,10 @@ EXECUTABLE=$5
 #
 LOCAL_DIR_ON_HOST=/local
 LOCAL_DIR=/local
+###### below used hardcoded for beta ami.  Need to handle these some other way to be passed in
 mkdir -p $LOCAL_DIR/Users/liefeld/GenePattern
+mkdir -p $LOCAL_DIR/opt/gpbeta/gp_home/users/
+ln -s /local/opt/ /opt
 
 #
 # assign filenames for STDOUT and STDERR if not already set
@@ -31,65 +33,92 @@ mkdir -p $LOCAL_DIR/Users/liefeld/GenePattern
 : ${STDOUT_FILENAME=$GP_METADATA_DIR/stdout.txt}
 : ${STDERR_FILENAME=$GP_METADATA_DIR/stderr.txt}
 : ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
-
-# echo out params
-#echo DIND Task dir is -$TASKLIB-   $1
-#echo DIND input files location  is -$INPUT_FILES_DIR-  $2
-#echo DIND S3_ROOT is -$S3_ROOT-  $3
-#echo DIND working dir is  -$WORKING_DIR-  $4
-#echo DIND executable is -$5-  
 chmod a+x $5
+
+#
+# set the modules container
+#
+if [ "x$DOCKER_CONTAINER" = "x" ]; then
+    # Variable is empty
+    echo "== no DOCKER_CONTAINER specified. Using default "
+    DOCKER_CONTAINER=genepattern/docker-java17openjdk:develop
+
+fi
+
 
 # copy the source over from tasklib
 mkdir -p $TASKLIB
-echo "1. PERFORMING AWS SYNC $S3_ROOT$TASKLIB $LOCAL_DIR/$TASKLIB"
+echo "=== 1. PERFORMING AWS SYNC $S3_ROOT$TASKLIB $LOCAL_DIR/$TASKLIB"
 aws s3 sync $S3_ROOT$TASKLIB $LOCAL_DIR/$TASKLIB --quiet
-ls $LOCAL_DIR/$TASKLIB
 
 # copy the inputs
 mkdir -p $INPUT_FILES_DIR
-echo "2. PERFORMING aws s3 sync $S3_ROOT$INPUT_FILES_DIR $LOCAL_DIR/$INPUT_FILES_DIR"
+echo "=== 2. PERFORMING aws s3 sync $S3_ROOT$INPUT_FILES_DIR $LOCAL_DIR/$INPUT_FILES_DIR"
 aws s3 sync $S3_ROOT$INPUT_FILES_DIR $LOCAL_DIR/$INPUT_FILES_DIR --quiet
-ls $LOCAL_DIR/$INPUT_FILES_DIR
-
-echo "=========  what data is on this machine =========="
-find $LOCAL_DIR -name "test_*" 
-echo "========= what containers are running "
-docker ps
 
 # switch to the working directory and sync it up
-echo "3. PERFORMING aws s3 sync $S3_ROOT$WORKING_DIR $LOCAL_DIR/$WORKING_DIR "
+echo "=== 3. PERFORMING aws s3 sync $S3_ROOT$WORKING_DIR $LOCAL_DIR/$WORKING_DIR "
 aws s3 sync $S3_ROOT$WORKING_DIR $LOCAL_DIR/$WORKING_DIR --quiet
 
-echo "3a synching gp_metadata_dir"
+echo "=== 4. synching gp_metadata_dir"
 aws s3 sync $S3_ROOT$GP_METADATA_DIR $LOCAL_DIR/$GP_METADATA_DIR 
 
 cd $LOCAL_DIR/$WORKING_DIR
-echo "3b. chmodding $GP_METADATA_DIR from $PWD"
+echo "=== 5. chmodding $GP_METADATA_DIR from $PWD"
 chmod a+rwx $LOCAL_DIR/$GP_METADATA_DIR/*
-ls -alrt
+
+echo "=== Load $MOD_LIB libraries"
+# bootstapping until all modules have unique fully-populated containers
+#  setup so the inner container loads R libraries, add a package load before the actual module call
+# and do the necessary S3 sync based on an environment variable
+if [ "x$MOD_LIBS_S3" = "x" ]; then
+    # Variable is empty
+    echo "== no module libs to copy in "
+else
+    # copy in cached module libraries - this is only temporary
+    aws s3 sync $S3_ROOT$MOD_LIBS_S3 $MOD_LIBS --quiet
+    ls -alrt $MOD_LIBS
+fi
+
+# RUN Peter's file for additional S3 fetches
+if [ -f "$LOCAL_DIR$GP_METADATA_DIR/aws-sync-from-s3.sh" ]
+then
+    echo "==Running Peter's s3 script ==="
+    . $LOCAL_DIR$GP_METADATA_DIR/aws-sync-from-s3.sh
+    mv $LOCAL_DIR$GP_METADATA_DIR/aws-sync-from-s3.sh $LOCAL_DIR$GP_METADATA_DIR/aws-sync-from-s3_HOLD.sh
+    echo "# stubbed out to prevent call from inside inner container" > $LOCAL_DIR$GP_METADATA_DIR/aws-sync-from-s3.sh
+    chmod a+x $LOCAL_DIR$GP_METADATA_DIR/aws-sync-from-s3.sh
+    echo "===Stubbed out S3 script "
+fi
 
 echo "========== S3 copies in complete, DEBUG inside 1st container ================="
 
-. /usr/local/bin/runLocalOnBatch.sh $@
+. /usr/local/bin/runLocal.sh $@
 
 echo "====== END RUNNING Module, copy back from S3  ================="
 
 # send the generated files back
-echo "5. PERFORMING aws s3 sync $LOCAL_DIR/$WORKING_DIR $S3_ROOT$WORKING_DIR"
+echo "=== 6. PERFORMING aws s3 sync $LOCAL_DIR/$WORKING_DIR $S3_ROOT$WORKING_DIR"
 aws s3 sync $LOCAL_DIR/$WORKING_DIR $S3_ROOT$WORKING_DIR 
 
-echo "6. PERFORMING aws s3 sync $LOCAL_DIR/$TASKLIB $S3_ROOT$TASKLIB"
+echo "=== 7. PERFORMING aws s3 sync $LOCAL_DIR/$TASKLIB $S3_ROOT$TASKLIB"
 aws s3 sync $LOCAL_DIR/$TASKLIB $S3_ROOT$TASKLIB --quiet
-echo "7. PERFORMING aws s3 sync  $LOCAL_DIR/$GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR"
+echo "=== 8. PERFORMING aws s3 sync  $LOCAL_DIR/$GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR"
 aws s3 sync  $LOCAL_DIR/$GP_METADATA_DIR $S3_ROOT$GP_METADATA_DIR --quiet
 
 #
 # allow customization for specific images - eg to save RLIBS back to S3 for reuse
 #
-#if [ -f "/usr/local/bin/runS3Batch_postrun_custom.sh" ]; then
-#   . /usr/local/bin/runS3Batch_postrun_custom.sh
-#fi
+if [ "x$MOD_LIBS_S3" = "x" ]; then
+    # Variable is empty
+    echo "== no module libs to copy in "
+else
+    # save changes to  $MOD_LIBS back to $MOD_LIBS_S3: "
+    aws s3 sync $MOD_LIBS $S3_ROOT$MOD_LIBS_S3  --quiet
+fi
+
+echo "now try to save container"
+/usr/local/bin/saveContainerInECR.sh
 
 
 
