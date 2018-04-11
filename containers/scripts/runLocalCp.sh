@@ -57,6 +57,9 @@ docker cp $CONTAINER_ID:$MOD_LIBS/. $LOCAL_DIR$MOD_LIBS
 docker cp $CONTAINER_ID:$TASKLIB/. $LOCAL_DIR$TASKLIB
 docker cp $CONTAINER_ID:$WORKING_DIR/. $LOCAL_DIR$WORKING_DIR
 docker cp $CONTAINER_ID:$INPUT_FILES_DIR/. $LOCAL_DIR$INPUT_FILES_DIR
+
+# now remove the inputs and outputs before we save the image
+docker exec $CONTAINER_ID rm -rf $WORKING_DIR $INPUT_FILES_DIR $GP_METADATA_DIR
 docker stop $CONTAINER_ID
 
 
