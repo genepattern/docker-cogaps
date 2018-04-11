@@ -33,6 +33,9 @@ ln -s /local/opt/ /opt
 : ${STDOUT_FILENAME=$GP_METADATA_DIR/stdout.txt}
 : ${STDERR_FILENAME=$GP_METADATA_DIR/stderr.txt}
 : ${EXITCODE_FILENAME=$GP_METADATA_DIR/exit_code.txt}
+
+# Default is to mount the local drive, option us /usr/local/bin/runLocalCp.sh
+: ${RUN_DOCKER_SCRIPT=/usr/local/bin/runLocalMnt.sh}
 chmod a+x $5
 
 #
@@ -91,9 +94,10 @@ then
     echo "===Stubbed out S3 script "
 fi
 
+
 echo "========== S3 copies in complete, DEBUG inside 1st container ================="
 
-. /usr/local/bin/runLocal.sh $@
+. $RUN_DOCKER_SCRIPT $@
 
 echo "====== END RUNNING Module, copy back from S3  ================="
 
@@ -117,8 +121,6 @@ else
     aws s3 sync $MOD_LIBS $S3_ROOT$MOD_LIBS_S3  --quiet
 fi
 
-echo "now try to save container"
-/usr/local/bin/saveContainerInECR.sh
 
 
 
