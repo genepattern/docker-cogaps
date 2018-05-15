@@ -1,0 +1,45 @@
+{
+    "jobDefinitionName": "S3ModuleWrapper",
+    "jobDefinitionArn": "arn:aws:batch:us-east-1:718039241689:job-definition/S3ModuleWrapper:3",
+    "revision": 3,
+    "status": "ACTIVE",
+    "type": "container",
+    "parameters": {
+        "exe1": "-u",
+        "s3_root": "noSuchBucket",
+        "inputFileDirectory": "job_1X",
+        "working_dir": "job1_X",
+        "taskLib": "src"
+    },
+    "containerProperties": {
+        "image": "liefeld/dind",
+        "vcpus": 1,
+        "memory": 200,
+        "command": [
+            "/usr/local/bin/copyFromS3ThenRun.sh",
+            "Ref::taskLib",
+            "Ref::inputFileDirectory",
+            "Ref::s3_root",
+            "Ref::working_dir",
+            "Ref::exe1"
+        ],
+        "jobRoleArn": "arn:aws:iam::718039241689:role/BATCH-EFS-ROLE",
+        "volumes": [
+            {
+                "host": {
+                    "sourcePath": "/var/run"
+                },
+                "name": "RUN"
+            }
+        ],
+        "environment": [],
+        "mountPoints": [
+            {
+                "containerPath": "/var/run",
+                "readOnly": false,
+                "sourceVolume": "RUN"
+            }
+        ],
+        "ulimits": []
+    }
+}
