@@ -1,0 +1,7 @@
+[{name: "Basic parameters", 
+  parameters: ["input.file", "output.file", "num.iterations", "pattern.range"]}, 
+ {name: "Gene Standard Deviation", hidden: false, 
+  parameters: ["stddev.input.file", "stddev.decimal.value"]};
+ {name: "Miscellaneous", hidden:false, 
+  parameters: ["seed"]}
+]
