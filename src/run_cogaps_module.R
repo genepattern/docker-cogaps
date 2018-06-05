@@ -22,6 +22,7 @@ suppressMessages(suppressWarnings(library(CoGAPS)))
 # stdout file.  This can be useful for reproducibility, troubleshooting
 # and comparing between runs.
 sessionInfo()
+print(packageVersion("CoGAPS"))
 
 # Get the command line arguments.  We'll process these with optparse.
 # https://cran.r-project.org/web/packages/optparse/index.html
@@ -49,6 +50,9 @@ opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
 source(file.path("/usr/local/bin/cogaps/", "common.R"))
+source(file.path("/usr/local/bin/cogaps/", "override_plotP.R"))
+
+print(packageVersion("CoGAPS"))
 
 # Process the parameters.  
 # Note that since some parameters are optional, we must be prepared to receive no value
@@ -110,15 +114,16 @@ for (nPatterns in patternRange)
         nEquil=num.iterations)
 }
 chisq <- sapply(patternRange, function(i) cogapsResult[[i]]$meanChi2)
-pdf("chiSquare.pdf")
+pdf(paste(opt$output.file, "_chiSquare.pdf", sep=""))
 plot(patternRange, chisq)
 dev.off()
 
 bestPattern <- which.min(chisq)
 bestResult <- cogapsResult[[patternRange[[bestPattern]]]]
-pdf(paste(opt#output.file, ".pdf", sep="")) 
+#pdf(paste(opt$output.file, ".pdf", sep="")) 
+pdf("output.pdf")
 
-plotP(bestResult$Pmean)
+override_plotP(bestResult$Pmean)
 dev.off()
 
 #
