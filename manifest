@@ -1,7 +1,7 @@
 #Wed May 30 07:06:15 PDT 2018
 name=CoGAPS
 commandLine=Rscript --no-save --quiet --slave --no-restore \
-     /usr/local/bin/cogaps/run_gp_tutorial_module.R  \
+     /usr/local/bin/cogaps/run_cogaps_module.R  \
     --input.file\=<input.file> \
     <stddev.decimal.value>   <stddev.input.file> \
     --num.iterations\=<num.iterations>  \

@@ -53,18 +53,23 @@ COPY install_stuff.R /build/source
 RUN Rscript /build/source/install_stuff.R
 RUN apt-get update -y && \
     apt-get install -y  -t unstable git
+
+RUN apt install -t unstable -y  libomp-dev
+
 RUN mkdir /cogaps_src &&\
     cd /cogaps_src && \
     git clone https://github.com/FertigLab/CoGAPS.git && \
     cd CoGAPS && \
-    git branch develop && \
-    R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
-    R CMD INSTALL CoGAPS_*.tar.gz
+    git checkout --track origin/develop
+
+
+RUN R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
+   R CMD INSTALL CoGAPS_*.tar.gz
 
 
 # the module files are set into /usr/local/bin/cogaps
 ENV PATH "$PATH:/usr/local/bin/cogaps"
-COPY module/* /usr/local/bin/cogaps/
+COPY src/* /usr/local/bin/cogaps/
  
-CMD ["/usr/local/bin/runS3OnBatch.sh" ]
+CMD ["Rscript", "/usr/local/bin/cogaps/run_gp_tutorial_module.R" ]
 

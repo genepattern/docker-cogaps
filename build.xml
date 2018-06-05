@@ -2,7 +2,7 @@
 <!-- Ant build file -->
 
 <project basedir="." default="create-zip" name="CoGAPS">
-	<property name="dirOffset" value="../../../common_module_code" />
+	<property name="dirOffset" value="../../common_module_code" />
 	<import file="${dirOffset}/commontargets.xml" />
 
 	<target depends="init" name="create-zip">
