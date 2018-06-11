@@ -3,11 +3,11 @@ name=CoGAPS
 commandLine=Rscript --no-save --quiet --slave --no-restore \
      /usr/local/bin/cogaps/run_cogaps_module.R  \
     --input.file\=<input.file> \
-    <stddev.decimal.value>   <stddev.input.file> \
+    --stddev.decimal.value\=<standard.deviation.decimal.value>  --stddev.input.file\=<standard.deviation.input.file> \
     --num.iterations\=<num.iterations>  \
-    --pattern.range\=<pattern.range> \
+    --pattern.range\=<start.at>:<stop.at>:<step> \
     -- seed\=<seed> \
-    --output.file\=<output.file>
+    --output.file\=<output.file> 
 license=
 taskDoc=doc.html
 fileFormat=gct
@@ -40,7 +40,7 @@ p2_description=A GCT file containing the standard deviation model for the gene e
 p2_fileFormat=gct
 p2_numValues=1
 p2_MODE=IN
-p2_name=stddev.input.file
+p2_name=standard.deviation.input.file
 p2_optional=on
 p2_prefix_when_specified=--stddev.input.file\=
 p2_TYPE=FILE
@@ -49,7 +49,7 @@ p2_value=
 
 p3_default_value=0.1
 p3_description=The standard deviation to use if a standard deviation file is not specified. Defaults to a value of 0.10, i.e. 10% of the gene expression value for the given sample & gene.
-p3_name=stddev.decimal.value
+p3_name=standard.deviation.decimal.value
 p3_optional=on
 p3_prefix_when_specified=--stddev.decimal.value\=
 # Note that the type specified here is not actually used by GenePattern or the module.
@@ -71,19 +71,34 @@ p5_prefix_when_specified=
 p5_type=java.lang.String
 p5_value=
 
-p6_default_value=2:4
-p6_description=Pattern range, sweep through this many patterns
-p6_name=pattern.range
-p6_optional=
-p6_prefix_when_specified=
-p6_type=java.lang.String
-
 p7_default_value=123
 p7_description=Random number generator seed
 p7_name=seed
 p7_optional=
 p7_prefix_when_specified=
 p7_type=java.lang.String
+
+p8_default_value=2
+p8_description=Begin pattern range sweep with this many patterns.
+p8_name=start.at
+p8_optional=
+p8_prefix_when_specified=
+p8_type=java.lang.String
+
+p9_default_value=4
+p9_description=Stop pattern range sweep at this many patterns.
+p9_name=stop.at
+p9_optional=
+p9_prefix_when_specified=
+p9_type=java.lang.String
+
+p6_default_value=1
+p6_description=Step through pattern range sweep (from start to stop) by this number. E.g. if start is 2 and end is 10, CoGAPS will test for pattern values 2,4,6,8,10.
+p6_name=step
+p6_optional=
+p6_prefix_when_specified=
+p6_type=java.lang.String
+
 
 
 

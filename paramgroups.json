@@ -1,7 +1,11 @@
 [{name: "Basic parameters", 
-  parameters: ["input.file", "output.file", "num.iterations", "pattern.range"]}, 
+  parameters: ["input.file", "output.file", "num.iterations"]}, 
  {name: "Gene Standard Deviation", hidden: false, 
-  parameters: ["stddev.input.file", "stddev.decimal.value"]};
- {name: "Miscellaneous", hidden:false, 
+  parameters: ["standard.deviation.input.file", "standard.deviation.decimal.value"]},
+
+  {name: "Pattern Search Space", hidden: false,
+     parameters: ["start.at", "stop.at", "step"]},
+
+ {name: "Miscellaneous", hidden:true, 
   parameters: ["seed"]}
 ]
