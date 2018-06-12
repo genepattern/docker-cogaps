@@ -32,12 +32,14 @@ arguments <- commandArgs(trailingOnly=TRUE)
 option_list <- list(
   # Note: it's not necessary for the names to match here, it's just a convention
   # to keep things consistent.
-  make_option("--num.iterations", dest="num.iterations"),
-  make_option("--seed", dest="seed"),
+  make_option("--num.iterations", type="integer", dest="num.iterations"),
+  make_option("--seed", type="integer", dest="seed"),
   make_option("--input.file", dest="input.file"),
   make_option("--stddev.input.file", dest="stddev.input.file"),
-  make_option("--stddev.decimal.value", dest="stddev.decimal.value"),
-  make_option("--pattern.range", dest="pattern.range"),
+  make_option("--stddev.decimal.value", type="double", dest="stddev.decimal.value"),
+  make_option("--pattern.start", type="integer", dest="pattern.start"),
+  make_option("--pattern.stop", type="integer", dest="pattern.stop"),
+  make_option("--pattern.step", type="integer", dest="pattern.step"),
   make_option("--output.file", dest="output.file")
   )
 
@@ -77,13 +79,17 @@ if (is.null(opts$seed) || is.na(opts$seed)) {
    seed <- opts$seed
 }
 
-patternRange <-eval(parse(text=opts$pattern.range)) 
-
+prange <- paste("seq(", opts$pattern.start, ", ", opts$pattern.stop, ", by=", opts$pattern.step, ")", sep="")
+patternRange <- eval(parse(text=prange))
 
 # Due to the choices presented in the manifest, GP will *only* allow the strings "true" and "false" 
 # here, so there's no need to convert it to a logical value; optparse will take care of that for us.
 
 # Load the GCT input file.
+print("Loading gct file now")
+if (!file.exists(opts$input.file)){
+     print("GCT file does not exist")
+}
 gct <- read.gct(opts$input.file)
 
 min(gct[['data']])
@@ -93,9 +99,10 @@ gct[['data']] <- gct[['data']] + abs(min(gct[['data']]) ) +1
 min(gct[['data']])
 
 
-if (is.null(opt$stddev.input.file)){
+if (is.null(opts$stddev.input.file)){
     stddev <- abs(gct[['data']] * 0.1) + 1
 } else {
+    print("Trying to read std deviation input file")
     # assume stddev is 10% of the expression values and prevent it from being 0 	
     stddev <- read.gct(opts$stddev.input.file)
     stddev <- stddev[['data']]
@@ -114,14 +121,14 @@ for (nPatterns in patternRange)
         nEquil=num.iterations)
 }
 chisq <- sapply(patternRange, function(i) cogapsResult[[i]]$meanChi2)
-pdf(paste(opt$output.file, "_chiSquare.pdf", sep=""))
+pdf(paste(opts$output.file, "_chiSquare.pdf", sep=""))
 plot(patternRange, chisq)
 dev.off()
 
 bestPattern <- which.min(chisq)
 bestResult <- cogapsResult[[patternRange[[bestPattern]]]]
-#pdf(paste(opt$output.file, ".pdf", sep="")) 
-pdf("output.pdf")
+pdf(paste(opts$output.file, ".pdf", sep="")) 
+#pdf("output.pdf")
 
 override_plotP(bestResult$Pmean)
 dev.off()

@@ -1,109 +1,140 @@
-#Wed May 30 07:06:15 PDT 2018
-name=CoGAPS
-commandLine=Rscript --no-save --quiet --slave --no-restore \
-     /usr/local/bin/cogaps/run_cogaps_module.R  \
-    --input.file\=<input.file> \
-    --stddev.decimal.value\=<standard.deviation.decimal.value>  --stddev.input.file\=<standard.deviation.input.file> \
-    --num.iterations\=<num.iterations>  \
-    --pattern.range\=<start.at>:<stop.at>:<step> \
-    -- seed\=<seed> \
-    --output.file\=<output.file> 
-license=
-taskDoc=doc.html
-fileFormat=gct
-taskType=Tutorial
-os=any
-quality=preproduction
-privacy=public
-description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
-version=
-minGenePatternVersion=3.9.13
-language=R3.1.3
-cpuType=any
+#copyOfCoGAPS
+#Tue Jun 12 16:56:03 UTC 2018
+JVMLevel=
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:999999999
 author=Ted Liefeld, UCSD School of Medicine.
-
+categories=
+commandLine=Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file> <standard.deviation.decimal.value>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file> 
+cpuType=any
+description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
+fileFormat=gct
+language=any
+minGenePatternVersion=3.9.13
+name=CoGAPS
+os=any
+p1_MODE=IN
+p1_TYPE=FILE
 p1_default_value=
 p1_description=A GCT file containing the gene expression profiles
 p1_fileFormat=gct
-p1_numValues=1
-p1_MODE=IN
+p1_flag=
 p1_name=input.file
+p1_numValues=1..1
 p1_optional=
+p1_prefix=
 p1_prefix_when_specified=
-p1_TYPE=FILE
 p1_type=java.io.File
 p1_value=
-
-
+p2_MODE=IN
+p2_TYPE=FILE
 p2_default_value=
 p2_description=A GCT file containing the standard deviation model for the gene expression profiles
 p2_fileFormat=gct
-p2_numValues=1
-p2_MODE=IN
+p2_flag=--stddev.input.file\=
 p2_name=standard.deviation.input.file
+p2_numValues=0..1
 p2_optional=on
+p2_prefix=--stddev.input.file\=
 p2_prefix_when_specified=--stddev.input.file\=
-p2_TYPE=FILE
 p2_type=java.io.File
 p2_value=
-
+p3_MODE=
+p3_TYPE=TEXT
 p3_default_value=0.1
 p3_description=The standard deviation to use if a standard deviation file is not specified. Defaults to a value of 0.10, i.e. 10% of the gene expression value for the given sample & gene.
+p3_fileFormat=
+p3_flag=--stddev.decimal.value\=
 p3_name=standard.deviation.decimal.value
+p3_numValues=0..1
 p3_optional=on
+p3_prefix=--stddev.decimal.value\=
 p3_prefix_when_specified=--stddev.decimal.value\=
-# Note that the type specified here is not actually used by GenePattern or the module.
 p3_type=java.lang.String
 p3_value=
-
+p4_MODE=
+p4_TYPE=TEXT
 p4_default_value=500
 p4_description=Number of iterations
+p4_fileFormat=
+p4_flag=
 p4_name=num.iterations
+p4_numValues=1..1
 p4_optional=
+p4_prefix=
 p4_prefix_when_specified=
 p4_type=java.lang.String
-
-p5_default_value=<input.file_basename>.incremented.gct
+p4_value=
+p5_MODE=
+p5_TYPE=TEXT
+p5_default_value=<input.file_basename>.cogaps
 p5_description=Output file name
+p5_fileFormat=
+p5_flag=
 p5_name=output.file
+p5_numValues=1..1
 p5_optional=
+p5_prefix=
 p5_prefix_when_specified=
 p5_type=java.lang.String
 p5_value=
-
-p7_default_value=123
-p7_description=Random number generator seed
-p7_name=seed
-p7_optional=
-p7_prefix_when_specified=
-p7_type=java.lang.String
-
-p8_default_value=2
-p8_description=Begin pattern range sweep with this many patterns.
-p8_name=start.at
-p8_optional=
-p8_prefix_when_specified=
-p8_type=java.lang.String
-
-p9_default_value=4
-p9_description=Stop pattern range sweep at this many patterns.
-p9_name=stop.at
-p9_optional=
-p9_prefix_when_specified=
-p9_type=java.lang.String
-
+p6_MODE=
+p6_TYPE=TEXT
 p6_default_value=1
 p6_description=Step through pattern range sweep (from start to stop) by this number. E.g. if start is 2 and end is 10, CoGAPS will test for pattern values 2,4,6,8,10.
+p6_fileFormat=
+p6_flag=
 p6_name=step
+p6_numValues=1..1
 p6_optional=
+p6_prefix=
 p6_prefix_when_specified=
 p6_type=java.lang.String
-
-
-
-
+p6_value=
+p7_MODE=
+p7_TYPE=TEXT
+p7_default_value=123
+p7_description=Random number generator seed
+p7_fileFormat=
+p7_flag=
+p7_name=seed
+p7_numValues=1..1
+p7_optional=
+p7_prefix=
+p7_prefix_when_specified=
+p7_type=java.lang.String
+p7_value=
+p8_MODE=
+p8_TYPE=TEXT
+p8_default_value=2
+p8_description=Begin pattern range sweep with this many patterns.
+p8_fileFormat=
+p8_flag=
+p8_name=start.at
+p8_numValues=1..1
+p8_optional=
+p8_prefix=
+p8_prefix_when_specified=
+p8_type=java.lang.String
+p8_value=
+p9_MODE=
+p9_TYPE=TEXT
+p9_default_value=4
+p9_description=Stop pattern range sweep at this many patterns.
+p9_fileFormat=
+p9_flag=
+p9_name=stop.at
+p9_numValues=1..1
+p9_optional=
+p9_prefix=
+p9_prefix_when_specified=
+p9_type=java.lang.String
+p9_value=
+privacy=private
+publicationDate=06/11/2018 12\:24 
+quality=development
 requiredPatchLSIDs=
 requiredPatchURLs=
-
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:999999999
-publicationDate=4/15/2016 15\:06 
+taskDoc=doc.html
+taskType=Tutorial
+userid=ted-dev
+version=
