@@ -1,9 +1,9 @@
-#copyOfCoGAPS
-#Tue Jun 12 16:56:03 UTC 2018
+#CoGAPS
+#Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:999999999
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376\:0.1.2
 author=Ted Liefeld, UCSD School of Medicine.
-categories=
+categories=Tutorial
 commandLine=Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file> <standard.deviation.decimal.value>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file> 
 cpuType=any
 description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
@@ -129,12 +129,12 @@ p9_prefix=
 p9_prefix_when_specified=
 p9_type=java.lang.String
 p9_value=
-privacy=private
-publicationDate=06/11/2018 12\:24 
+privacy=public
+publicationDate=06/18/2018 12\:57 
 quality=development
 requiredPatchLSIDs=
 requiredPatchURLs=
 taskDoc=doc.html
 taskType=Tutorial
 userid=ted-dev
-version=
+version=set quality to 'development', set categories\='Tutorial'
