@@ -82,9 +82,6 @@ if (is.null(opts$seed) || is.na(opts$seed)) {
 prange <- paste("seq(", opts$pattern.start, ", ", opts$pattern.stop, ", by=", opts$pattern.step, ")", sep="")
 patternRange <- eval(parse(text=prange))
 
-# Due to the choices presented in the manifest, GP will *only* allow the strings "true" and "false" 
-# here, so there's no need to convert it to a logical value; optparse will take care of that for us.
-
 # Load the GCT input file.
 print("Loading gct file now")
 if (!file.exists(opts$input.file)){
@@ -92,11 +89,8 @@ if (!file.exists(opts$input.file)){
 }
 gct <- read.gct(opts$input.file)
 
-min(gct[['data']])
 # XXX TEMP TO USE THIS FOR TESTING WITH ALL AML THAT HAS NEGATIVE VALUES
-gct[['data']] <- gct[['data']] + abs(min(gct[['data']]) ) +1
-
-min(gct[['data']])
+# gct[['data']] <- gct[['data']] + abs(min(gct[['data']]) ) +1
 
 
 if (is.null(opts$stddev.input.file)){
@@ -128,4 +122,21 @@ bestResult <- cogapsResult[[patternRange[[bestPattern]]]]
 pdf(paste(opts$output.file, ".pdf", sep="")) 
 override_plotP(bestResult$Pmean)
 dev.off()
+
+# Write out the Amean and Pmean matrices and their standard deviations
+# 
+gctA <-list(data=bestResult$Amean)
+write.gct(gctA, file.path(getwd(), paste(opts$output.file, "_Amean.gct", sep="")))
+
+
+gctAsd <-list(data=bestResult$Asd)
+write.gct(gctAsd, file.path(getwd(), paste(opts$output.file, "_Asd.gct", sep="")))
+
+gctP <-list(data=bestResult$Pmean)
+write.gct(gctP, file.path(getwd(), paste(opts$output.file, "_Pmean.gct", sep="")))
+
+gctPsd <-list(data=bestResult$Amean)
+write.gct(gctPsd, file.path(getwd(), paste(opts$output.file, "_Psd.gct", sep="")))
+
+
 

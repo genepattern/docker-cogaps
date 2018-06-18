@@ -43,7 +43,7 @@ RUN mkdir /cogaps_src &&\
     cd /cogaps_src && \
     git clone https://github.com/FertigLab/CoGAPS.git && \
     cd CoGAPS && \
-    git checkout --track origin/develop
+    git checkout 40c26be
 
 
 RUN R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
