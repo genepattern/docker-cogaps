@@ -109,10 +109,6 @@ if (is.null(opts$stddev.input.file)){
 
 }
 
-class(num.iterations)
-
-#results <- gapsRun(gct[['data']], stddev, nFactor=3, nEquil=num.iterations, nSample=num.iterations)
-#plotGAPS(results$Amean, results$Pmean, 'ModSimFigs')
 cogapsResult <- list()
 for (nPatterns in patternRange)
 {
@@ -125,23 +121,11 @@ pdf(paste(opts$output.file, "_chiSquare.pdf", sep=""))
 plot(patternRange, chisq)
 dev.off()
 
+# now do the full plot for the best one
+
 bestPattern <- which.min(chisq)
 bestResult <- cogapsResult[[patternRange[[bestPattern]]]]
 pdf(paste(opts$output.file, ".pdf", sep="")) 
-#pdf("output.pdf")
-
 override_plotP(bestResult$Pmean)
 dev.off()
 
-#
-#  CoGAPS example from docs
-#
-#results2 <- CoGAPS(data=SimpSim.D, unc=SimpSim.S, GStoGenes=GSets, nFactor=3, nEquil=nIter, nSample=nIter, plot=TRUE)
-#
-#plotGAPS(results2$Amean, results2$Pmean, 'GSFigs')
-#
-
-# Print the sessionInfo once more on the way out.  This is not strictly necessary
-# but gives us another snapshot of the environment in final form as another point
-# for troubleshooting in case anything has changed.
-sessionInfo()
