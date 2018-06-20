@@ -22,12 +22,12 @@ suppressMessages(suppressWarnings(library(CoGAPS)))
 # stdout file.  This can be useful for reproducibility, troubleshooting
 # and comparing between runs.
 sessionInfo()
-print(packageVersion("CoGAPS"))
 
 # Get the command line arguments.  We'll process these with optparse.
 # https://cran.r-project.org/web/packages/optparse/index.html
 arguments <- commandArgs(trailingOnly=TRUE)
 
+print(packageVersion("CoGAPS"))
 # Declare an option list for optparse to use in parsing the command line.
 option_list <- list(
   # Note: it's not necessary for the names to match here, it's just a convention
@@ -48,12 +48,10 @@ option_list <- list(
 opt <- parse_args(OptionParser(option_list=option_list), positional_arguments=TRUE, args=arguments)
 print(opt)
 opts <- opt$options
-
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
 source(file.path("/usr/local/bin/cogaps/", "common.R"))
 source(file.path("/usr/local/bin/cogaps/", "override_plotP.R"))
-
 print(packageVersion("CoGAPS"))
 
 # Process the parameters.  

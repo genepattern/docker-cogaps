@@ -9,20 +9,17 @@ RUN apt-get update && apt-get upgrade --yes && \
     apt-get install -t unstable libssl-dev  --yes && \
     apt-get install libxml2-dev --yes && \
     apt-get install libcurl4-gnutls-dev --yes && \
-    apt-get install mesa-common-dev --yes 
-
-# Update cache and install apt-utils for aptitude
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils && \
-  apt-get install aptitude -y && \
-  apt-get install libxml2-dev -y
-
-# Cairo required
-RUN aptitude install libglib2.0-dev -y && \
-  apt-get install libcairo2-dev -y && \
-  aptitude install libpango-1.0-0 -y && \
-  aptitude install libpangocairo-1.0-0 -y && \
-  aptitude install libpangoft2-1.0-0 -y   && \
-  apt-get install libpango1.0-dev libgtk2.0-dev xvfb xauth xfonts-base libxt-dev -y
+    apt-get install mesa-common-dev --yes && \ 
+    apt-get update && apt-get install -y --no-install-recommends apt-utils && \
+    apt-get install aptitude -y && \
+    apt-get install libxml2-dev -y && \
+    aptitude install libglib2.0-dev -y && \
+    apt-get install libcairo2-dev -y && \
+    aptitude install libpango-1.0-0 -y && \
+    aptitude install libpangocairo-1.0-0 -y && \
+    aptitude install libpangoft2-1.0-0 -y   && \
+    apt-get install libpango1.0-dev libgtk2.0-dev xvfb xauth xfonts-base libxt-dev -y && \
+    rm -rf /var/lib/apt/lists/*
 
 
 COPY sources.list /etc/apt/sources.list
@@ -37,17 +34,16 @@ RUN Rscript /build/source/install_stuff.R
 
 RUN apt-get update -y && \
     apt-get install -y  -t unstable git && \
-    apt install -t unstable -y  libomp-dev
-
-RUN mkdir /cogaps_src &&\
+    apt install -t unstable -y  libomp-dev && \
+    mkdir /cogaps_src &&\
     cd /cogaps_src && \
     git clone https://github.com/FertigLab/CoGAPS.git && \
     cd CoGAPS && \
-    git checkout 40c26be
-
-
-RUN R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
-   R CMD INSTALL CoGAPS_*.tar.gz
+    git checkout 40c26bed3b62ba4cfaa5aeaf2f265763ee82bfe4 && \
+    R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
+    R CMD INSTALL CoGAPS_*.tar.gz && \
+    rm -rf /cogaps_src && \
+    rm -rf /var/lib/apt/lists/*
 
 # the module files are set into /usr/local/bin/cogaps
 ENV PATH "$PATH:/usr/local/bin/cogaps"

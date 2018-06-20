@@ -7,7 +7,7 @@ COMMAND_LINE="Rscript --no-save --quiet --slave --no-restore  /usr/local/bin/cog
 
 LOCAL_DIR=$PWD
 
-docker run -v $LOCAL_DIR:$LOCAL_DIR -w $LOCAL_DIR -t genepattern/docker-cogaps $COMMAND_LINE
+docker run -v $LOCAL_DIR:$LOCAL_DIR -w $LOCAL_DIR/Job_3113 -t genepattern/docker-cogaps $COMMAND_LINE
 
 #docker run -v $LOCAL_DIR:$LOCAL_DIR -w $LOCAL_DIR genepattern/docker-cogaps ls
 
