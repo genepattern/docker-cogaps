@@ -50,7 +50,9 @@ print(opt)
 opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
+print("A")
 source(file.path("/usr/local/bin/cogaps/", "common.R"))
+print("B")
 source(file.path("/usr/local/bin/cogaps/", "override_plotP.R"))
 print(packageVersion("CoGAPS"))
 
