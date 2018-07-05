@@ -50,9 +50,7 @@ print(opt)
 opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
-print("A")
 source(file.path("/usr/local/bin/cogaps/", "common.R"))
-print("B")
 source(file.path("/usr/local/bin/cogaps/", "override_plotP.R"))
 print(packageVersion("CoGAPS"))
 
@@ -89,54 +87,55 @@ if (!file.exists(opts$input.file)){
 }
 gct <- read.gct(opts$input.file)
 
-# XXX TEMP TO USE THIS FOR TESTING WITH ALL AML THAT HAS NEGATIVE VALUES
-# gct[['data']] <- gct[['data']] + abs(min(gct[['data']]) ) +1
-
 
 if (is.null(opts$stddev.input.file)){
     stddev <- abs(gct[['data']] * 0.1) + 1
 } else {
-    print("Trying to read std deviation input file")
     # assume stddev is 10% of the expression values and prevent it from being 0 	
     stddev <- read.gct(opts$stddev.input.file)
     stddev <- stddev[['data']]
-
 }
 
+files2zip = {} 
 cogapsResult <- list()
 for (nPatterns in patternRange)
 {
     cogapsResult[[nPatterns]] <- CoGAPS(as.matrix(gct[["data"]]),
         as.matrix(stddev), nFactor=nPatterns, nSample=num.iterations,
         nEquil=num.iterations)
+  
+    currentResult = cogapsResult[[nPatterns]]
+    dirName = paste("n_", nPatterns, sep="")
+    dir.create(dirName)
+
+    pdf(file.path(dirName, paste(opts$output.file,"_", nPatterns, ".pdf", sep="")))
+    print(override_plotP(currentResult$Pmean))
+    dev.off()
+   
+    gctA <-list(data=currentResult$Amean)
+    write.gct(gctA, file.path(dirName, paste(opts$output.file, "_Amean.gct", sep="")))
+    gctAsd <-list(data=currentResult$Asd)
+    write.gct(gctAsd, file.path(dirName, paste(opts$output.file, "_Asd.gct", sep="")))
+    gctP <-list(data=currentResult$Pmean)
+    write.gct(gctP, file.path(dirName, paste(opts$output.file, "_Pmean.gct", sep="")))
+    gctPsd <-list(data=currentResult$Amean)
+    write.gct(gctPsd, file.path(dirName, paste(opts$output.file, "_Psd.gct", sep="")))
+    files2zip = c(files2zip,dir(dirName, full.names = TRUE)) 
 }
 chisq <- sapply(patternRange, function(i) cogapsResult[[i]]$meanChi2)
-pdf(paste(opts$output.file, "_chiSquare.pdf", sep=""))
+chiPdfFilename = paste(opts$output.file, "_chiSquare.pdf", sep="")
+pdf(chiPdfFilename)
 plot(patternRange, chisq)
 dev.off()
 
-# now do the full plot for the best one
+chiFilename=paste(opts$output.file, "_chiSquare.tsv", sep="")
+xx = cbind(patternRange, chisq)
+colnames(xx) = c("num.patterns", "chisq")
+write.table(xx, file=chiFilename, row.names=TRUE, col.names=TRUE)
 
-bestPattern <- which.min(chisq)
-bestResult <- cogapsResult[[patternRange[[bestPattern]]]]
-pdf(paste(opts$output.file, ".pdf", sep="")) 
-override_plotP(bestResult$Pmean)
-dev.off()
-
-# Write out the Amean and Pmean matrices and their standard deviations
-# 
-gctA <-list(data=bestResult$Amean)
-write.gct(gctA, file.path(getwd(), paste(opts$output.file, "_Amean.gct", sep="")))
-
-
-gctAsd <-list(data=bestResult$Asd)
-write.gct(gctAsd, file.path(getwd(), paste(opts$output.file, "_Asd.gct", sep="")))
-
-gctP <-list(data=bestResult$Pmean)
-write.gct(gctP, file.path(getwd(), paste(opts$output.file, "_Pmean.gct", sep="")))
-
-gctPsd <-list(data=bestResult$Amean)
-write.gct(gctPsd, file.path(getwd(), paste(opts$output.file, "_Psd.gct", sep="")))
+files2zip = c(files2zip, chiPdfFilename, chiFilename)
+zipFileName=paste(opts$output.file, ".zip", sep="")
+zip(zipfile=zipFileName, files=files2zip)
 
 
 
