@@ -39,11 +39,14 @@ RUN apt-get update -y && \
     cd /cogaps_src && \
     git clone https://github.com/FertigLab/CoGAPS.git && \
     cd CoGAPS && \
-    git checkout 40c26bed3b62ba4cfaa5aeaf2f265763ee82bfe4 && \
+    git checkout master && \
     R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
     R CMD INSTALL CoGAPS_*.tar.gz && \
     rm -rf /cogaps_src && \
     rm -rf /var/lib/apt/lists/*
+
+#     git checkout 40c26bed3b62ba4cfaa5aeaf2f265763ee82bfe4 && \
+
 
 # the module files are set into /usr/local/bin/cogaps
 ENV PATH "$PATH:/usr/local/bin/cogaps"
