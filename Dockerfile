@@ -39,7 +39,7 @@ RUN apt-get update -y && \
     cd /cogaps_src && \
     git clone https://github.com/FertigLab/CoGAPS.git && \
     cd CoGAPS && \
-    git checkout develop && \
+    git checkout master && \
     R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
     R CMD INSTALL CoGAPS_*.tar.gz && \
     rm -rf /cogaps_src && \
