@@ -105,21 +105,26 @@ for (nPatterns in patternRange)
         nEquil=num.iterations)
   
     currentResult = cogapsResult[[nPatterns]]
-    dirName = paste("n_", nPatterns, sep="")
-    dir.create(dirName)
+    
+    # don't use sub directories until the GPNB can handle them properly
+    # dirName = paste("n_", nPatterns, sep="")
+    # dir.create(dirName)
+    dirName="."
+
+
 
     pdf(file.path(dirName, paste(opts$output.file,"_", nPatterns, ".pdf", sep="")))
     print(override_plotP(currentResult$Pmean))
     dev.off()
    
     gctA <-list(data=currentResult$Amean)
-    write.gct(gctA, file.path(dirName, paste(opts$output.file, "_Amean.gct", sep="")))
+    write.gct(gctA, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Amean.gct", sep="")))
     gctAsd <-list(data=currentResult$Asd)
-    write.gct(gctAsd, file.path(dirName, paste(opts$output.file, "_Asd.gct", sep="")))
+    write.gct(gctAsd, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Asd.gct", sep="")))
     gctP <-list(data=currentResult$Pmean)
-    write.gct(gctP, file.path(dirName, paste(opts$output.file, "_Pmean.gct", sep="")))
+    write.gct(gctP, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Pmean.gct", sep="")))
     gctPsd <-list(data=currentResult$Amean)
-    write.gct(gctPsd, file.path(dirName, paste(opts$output.file, "_Psd.gct", sep="")))
+    write.gct(gctPsd, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Psd.gct", sep="")))
     files2zip = c(files2zip,dir(dirName, full.names = TRUE)) 
 }
 chisq <- sapply(patternRange, function(i) cogapsResult[[i]]$meanChi2)
