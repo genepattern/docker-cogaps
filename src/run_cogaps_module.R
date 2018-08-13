@@ -85,6 +85,7 @@ print("Loading gct file now")
 if (!file.exists(opts$input.file)){
      print("GCT file does not exist")
 }
+print("*****  Reading GCT file")
 gct <- read.gct(opts$input.file)
 
 
@@ -92,6 +93,7 @@ if (is.null(opts$stddev.input.file)){
     stddev <- abs(gct[['data']] * 0.1) + 1
 } else {
     # assume stddev is 10% of the expression values and prevent it from being 0 	
+    print("***** Reading stddev file")
     stddev <- read.gct(opts$stddev.input.file)
     stddev <- stddev[['data']]
 }
@@ -111,7 +113,7 @@ for (nPatterns in patternRange)
     # dir.create(dirName)
     dirName="."
 
-
+   print("***** writing pdfs") 
 
     pdf(file.path(dirName, paste(opts$output.file,"_", nPatterns, ".pdf", sep="")))
     print(override_plotP(currentResult$Pmean))
