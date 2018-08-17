@@ -2,16 +2,16 @@
 #CoGAPS
 #Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376\:0.1
+LSID=urn\:lsid\:broad.mit.edu\:DEV.cancer.software.genepattern.module.analysis\:00376\:0.1
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file> <standard.deviation.decimal.value>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file> 
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file> <standard.deviation.decimal.value>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets>
 cpuType=any
 description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
 fileFormat=gct
 language=any
 minGenePatternVersion=3.9.13
-name=CoGAPS
+name=devCoGAPS
 os=any
 job.docker.image=genepattern/docker-cogaps:v0.1-prerelease-2
 p1_MODE=IN
@@ -131,6 +131,35 @@ p9_prefix=
 p9_prefix_when_specified=
 p9_type=java.lang.String
 p9_value=
+
+p10_MODE=
+p10_TYPE=TEXT
+p10_default_value=4
+p10_description=Number of sets.
+p10_fileFormat=
+p10_flag=
+p10_name=num.sets
+p10_numValues=1..1
+p10_optional=
+p10_prefix=
+p10_prefix_when_specified=
+p10_type=java.lang.String
+p10_value=
+
+p11_MODE=
+p11_TYPE=java.lang.String
+p11_default_value=GWCoGAPS
+p11_description=GWCoGAPS/scCoGAPS
+p11_fileFormat=
+p11_flag=
+p11_name=distributed.method
+p11_numValues=1..1
+p11_optional=
+p11_prefix=
+p11_prefix_when_specified=
+p11_type=java.lang.String
+p11_value=GWCoGAPS\=GWCoGAPS;scCoGAPS\=scCoGAPS
+
 privacy=public
 publicationDate=06/22/2018 09\:09 
 quality=${quality.level}
