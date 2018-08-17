@@ -1,11 +1,11 @@
 [{name: "Basic parameters", 
   parameters: ["input.file", "output.file", "num.iterations"]}, 
- {name: "Gene Standard Deviation", hidden: false, 
-  parameters: ["standard.deviation.input.file", "standard.deviation.decimal.value"]},
+{name: "Distributed CoGAPS Parameters (GWCoGAPS/scCoGAPS)", hidden: false, 
+  parameters: ["distributed.method", "num.sets"]},
 
   {name: "Pattern Search Space", hidden: false,
      parameters: ["start.at", "stop.at", "step"]},
 
  {name: "Miscellaneous", hidden:true, 
-  parameters: ["seed"]}
+  parameters: ["seed", "standard.deviation.input.file"]}
 ]

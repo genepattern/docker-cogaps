@@ -34,9 +34,11 @@ option_list <- list(
   # to keep things consistent.
   make_option("--num.iterations", type="integer", dest="num.iterations"),
   make_option("--seed", type="integer", dest="seed"),
+  make_option("--distributed.method", dest="distributed.method"), # should be either NULL, "genome-wide", "single-cell"
+  make_option("--num.sets", type="integer", dest="num.sets"),
   make_option("--input.file", dest="input.file"),
   make_option("--stddev.input.file", dest="stddev.input.file"),
-  make_option("--stddev.decimal.value", type="double", dest="stddev.decimal.value"),
+  #make_option("--stddev.decimal.value", type="double", dest="stddev.decimal.value"),
   make_option("--pattern.start", type="integer", dest="pattern.start"),
   make_option("--pattern.stop", type="integer", dest="pattern.stop"),
   make_option("--pattern.step", type="integer", dest="pattern.step"),
@@ -51,7 +53,7 @@ opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
 source(file.path("/usr/local/bin/cogaps/", "common.R"))
-source(file.path("/usr/local/bin/cogaps/", "override_plotP.R"))
+#source(file.path("/usr/local/bin/cogaps/", "override_plotP.R"))
 print(packageVersion("CoGAPS"))
 
 # Process the parameters.  
@@ -71,6 +73,13 @@ if (is.null(opts$num.iterations) || is.na(opts$num.iterations)) {
 } else {
    num.iterations <- strtoi(opts$num.iterations)
 }
+
+if (is.null(opts$num.sets) || is.na(opts$num.sets)) {
+   stop("Parameter num.sets must be numeric")
+} else {
+   num.sets <- strtoi(opts$num.sets)
+}
+
 if (is.null(opts$seed) || is.na(opts$seed)) {
    stop("Parameter seed must be numeric")
 } else {
@@ -85,26 +94,22 @@ print("Loading gct file now")
 if (!file.exists(opts$input.file)){
      print("GCT file does not exist")
 }
-gct <- read.gct(opts$input.file)
 
-
-if (is.null(opts$stddev.input.file)){
-    stddev <- abs(gct[['data']] * 0.1) + 1
-} else {
-    # assume stddev is 10% of the expression values and prevent it from being 0 	
-    stddev <- read.gct(opts$stddev.input.file)
-    stddev <- stddev[['data']]
-}
+# R object that manage CoGAPS parameters
+params <- new("CogapsParams")
+params <- setParam(params, "nIterations", num.iterations)
+params <- setParam(params, "seed", seed)
+params <- setParam(params, "seed", opts$distributed.method)
+params <- setDistributedParams(params, num.sets)
 
 files2zip = {} 
 cogapsResult <- list()
 for (nPatterns in patternRange)
 {
-    cogapsResult[[nPatterns]] <- CoGAPS(as.matrix(gct[["data"]]),
-        as.matrix(stddev), nFactor=nPatterns, nSample=num.iterations,
-        nEquil=num.iterations)
+    cogapsResult[[nPatterns]] <- CoGAPS(data=opts$input.file,
+        params=params, uncertainty=stddev.input.file)
   
-    currentResult = cogapsResult[[nPatterns]]
+    currentResult <- cogapsResult[[nPatterns]]
     
     # don't use sub directories until the GPNB can handle them properly
     # dirName = paste("n_", nPatterns, sep="")
@@ -114,20 +119,20 @@ for (nPatterns in patternRange)
 
 
     pdf(file.path(dirName, paste(opts$output.file,"_", nPatterns, ".pdf", sep="")))
-    print(override_plotP(currentResult$Pmean))
+    plot(currentResult)
     dev.off()
    
-    gctA <-list(data=currentResult$Amean)
+    gctA <-list(data=currentResult$featureLoadings)
     write.gct(gctA, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Amean.gct", sep="")))
-    gctAsd <-list(data=currentResult$Asd)
+    gctAsd <-list(data=currentResult$featureStdDev)
     write.gct(gctAsd, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Asd.gct", sep="")))
-    gctP <-list(data=currentResult$Pmean)
+    gctP <-list(data=currentResult$sampleFactors)
     write.gct(gctP, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Pmean.gct", sep="")))
-    gctPsd <-list(data=currentResult$Amean)
+    gctPsd <-list(data=currentResult$sampleStdDev)
     write.gct(gctPsd, file.path(dirName, paste(opts$output.file,"_", nPatterns, "_Psd.gct", sep="")))
     files2zip = c(files2zip,dir(dirName, full.names = TRUE)) 
 }
-chisq <- sapply(patternRange, function(i) cogapsResult[[i]]$meanChi2)
+chisq <- sapply(patternRange, function(i) getMeanChiSq(cogapsResult[[i]]))
 chiPdfFilename = paste(opts$output.file, "_chiSquare.pdf", sep="")
 pdf(chiPdfFilename)
 plot(patternRange, chisq)
