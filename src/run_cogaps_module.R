@@ -99,7 +99,7 @@ if (!file.exists(opts$input.file)){
 params <- new("CogapsParams")
 params <- setParam(params, "nIterations", num.iterations)
 params <- setParam(params, "seed", seed)
-params <- setParam(params, "seed", opts$distributed.method)
+params <- setParam(params, "distributed", opts$distributed.method)
 params <- setDistributedParams(params, num.sets)
 
 files2zip = {} 
