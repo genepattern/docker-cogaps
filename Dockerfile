@@ -1,6 +1,6 @@
 # copyright 2017-2018 Regents of the University of California and the Broad Institute. All rights reserved.
 
-FROM r-base:3.4.3
+FROM r-base:3.5.1
 
 RUN mkdir /build
 

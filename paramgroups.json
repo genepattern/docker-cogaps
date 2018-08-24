@@ -1,7 +1,7 @@
 [{name: "Basic parameters", 
   parameters: ["input.file", "output.file", "num.iterations"]}, 
 {name: "Distributed CoGAPS Parameters (GWCoGAPS/scCoGAPS)", hidden: false, 
-  parameters: ["distributed.method", "num.sets"]},
+  parameters: ["distributed.method", "num.sets", "single-cell"]},
 
   {name: "Pattern Search Space", hidden: false,
      parameters: ["start.at", "stop.at", "step"]},
