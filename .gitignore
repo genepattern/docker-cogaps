@@ -1,0 +1,5 @@
+test/cogaps/*.gct
+test/cogaps/*.pdf
+test/cogaps/*.out
+test/cogaps/*.zip
+test/cogaps/*.tsv
