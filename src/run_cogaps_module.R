@@ -102,7 +102,6 @@ if (is.null(opts$distributed.method) || is.na(opts$distributed.method) || !(opts
     stop("distributed.method must be either none, genome-wide, or single-cell")
 }
 if (opts$distributed.method != "none") {
-  print("Distributed mode is none")
   params <- setParam(params, "distributed", opts$distributed.method)
 }
 
