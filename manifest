@@ -5,7 +5,7 @@ JVMLevel=
 LSID=urn\:lsid\:8080.gpserver.ip-172-31-26-71.ip-172-31-26-71.ec2.internal\:genepatternmodules\:50\:3
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads <job.cpuCount> --single-cell <single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data>
 cpuType=any
 description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
 fileFormat=gct
@@ -52,7 +52,7 @@ p3_optional=
 p3_prefix=
 p3_prefix_when_specified=
 p3_type=java.lang.String
-p3_value=True\=True;False\=False
+p3_value=TRUE\=True;FALSE\=False
 p4_MODE=
 p4_TYPE=TEXT
 p4_default_value=500
@@ -159,6 +159,21 @@ p11_prefix=
 p11_prefix_when_specified=
 p11_type=java.lang.String
 p11_value=none\=none;genome-wide\=genome-wide;single-cell\=single-cell
+
+p12_MODE=
+p12_TYPE=CHOICE
+p12_default_value=False
+p12_description=Transpose the dataset.
+p12_fileFormat=
+p12_flag=
+p12_name=transpose.data
+p12_numValues=1..1
+p12_optional=
+p12_prefix=
+p12_prefix_when_specified=
+p12_type=java.lang.String
+p12_value=TRUE\=True;FALSE\=False
+
 
 privacy=public
 publicationDate=06/22/2018 09\:09 

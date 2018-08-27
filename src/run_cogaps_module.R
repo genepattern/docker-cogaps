@@ -39,7 +39,7 @@ option_list <- list(
   make_option("--pattern.step", type="integer", dest="pattern.step"),
   make_option("--num.iterations", type="integer", dest="num.iterations"),
   make_option("--seed", type="integer", dest="seed"),
-  make_option("--single.cell", type="logical", dest="single.cell"),
+  make_option("--single-cell", type="logical", default=FALSE, dest="single.cell"),
   make_option("--distributed.method", dest="distributed.method"), # should be either "none", "genome-wide", "single-cell"
   make_option("--num.sets", type="integer", dest="num.sets"),
   make_option("--num.threads", type="integer", dest="num.threads"),
@@ -102,6 +102,7 @@ if (is.null(opts$distributed.method) || is.na(opts$distributed.method) || !(opts
     stop("distributed.method must be either none, genome-wide, or single-cell")
 }
 if (opts$distributed.method != "none") {
+  print("Distributed mode is none")
   params <- setParam(params, "distributed", opts$distributed.method)
 }
 
