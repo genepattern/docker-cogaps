@@ -180,6 +180,7 @@ pdf(chiPdfFilename)
 plot(patternRange, chisq)
 dev.off()
 
+
 chiFilename=paste(opts$output.file, "_chiSquare.tsv", sep="")
 xx = cbind(patternRange, chisq)
 colnames(xx) = c("num.patterns", "chisq")
