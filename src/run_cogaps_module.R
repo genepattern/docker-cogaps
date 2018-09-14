@@ -111,6 +111,7 @@ if (is.null(opts$num.sets) || is.na(opts$num.sets)) {
 }
 params <- setDistributedParams(params, nSets=opts$num.sets)
 
+
 # these arguments are passed directly
 if (is.null(opts$transpose.data) || is.na(opts$transpose.data)) {
    stop("Parameter transpose.data must be logial")
@@ -130,6 +131,7 @@ if (is.null(opts$pattern.stop) || is.na(opts$pattern.stop)) {
 }
 if (is.null(opts$pattern.step) || is.na(opts$pattern.step)) {
     stop("Parameter pattern.step must be numeric")
+
 }
 patternRange <- seq(opts$pattern.start, opts$pattern.stop, opts$pattern.step)
 

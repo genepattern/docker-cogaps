@@ -41,6 +41,7 @@ RUN apt-get update -y && \
     cd CoGAPS && \
     echo "layer change to forece rebuild" && \
     git checkout develop && \
+
     R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
     R CMD INSTALL CoGAPS_*.tar.gz && \
     rm -rf /cogaps_src && \
