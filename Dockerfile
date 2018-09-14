@@ -18,9 +18,11 @@ RUN apt-get update && apt-get upgrade --yes && \
     aptitude install libpango-1.0-0 -y && \
     aptitude install libpangocairo-1.0-0 -y && \
     aptitude install libpangoft2-1.0-0 -y   && \
-    apt-get install libpango1.0-dev libgtk2.0-dev xvfb xauth xfonts-base libxt-dev -y && \
+    apt-get install xvfb -y && \
+    apt-get install xauth xfonts-base libxt-dev -y && \
     rm -rf /var/lib/apt/lists/*
 
+# apt-get install libpango1.0 libgtk2.0  -y && \
 
 COPY sources.list /etc/apt/sources.list
 COPY Rprofile.gp.site ~/.Rprofile
@@ -41,7 +43,6 @@ RUN apt-get update -y && \
     cd CoGAPS && \
     echo "layer change to forece rebuild" && \
     git checkout develop && \
-
     R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
     R CMD INSTALL CoGAPS_*.tar.gz && \
     rm -rf /cogaps_src && \
