@@ -39,6 +39,7 @@ RUN apt-get update -y && \
     cd /cogaps_src && \
     git clone https://github.com/FertigLab/CoGAPS.git && \
     cd CoGAPS && \
+    echo "layer change to forece rebuild" && \
     git checkout develop && \
     R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
     R CMD INSTALL CoGAPS_*.tar.gz && \

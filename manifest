@@ -2,7 +2,7 @@
 #CoGAPS
 #Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
-LSID=urn\:lsid\:8080.gpserver.ip-172-31-26-71.ip-172-31-26-71.ec2.internal\:genepatternmodules\:50\:3
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
 commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data>
@@ -11,7 +11,7 @@ description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Baye
 fileFormat=gct
 language=any
 minGenePatternVersion=3.9.13
-name=devCoGAPS
+name=CoGAPS
 os=any
 job.docker.image=genepattern/docker-cogaps:v0.2-test
 p1_MODE=IN
