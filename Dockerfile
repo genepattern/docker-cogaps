@@ -1,6 +1,6 @@
 # copyright 2017-2018 Regents of the University of California and the Broad Institute. All rights reserved.
 
-FROM r-base:3.4.3
+FROM r-base:3.5.1
 
 RUN mkdir /build
 
@@ -39,7 +39,9 @@ RUN apt-get update -y && \
     cd /cogaps_src && \
     git clone https://github.com/FertigLab/CoGAPS.git && \
     cd CoGAPS && \
-    git checkout master && \
+    echo "layer change to forece rebuild" && \
+    git checkout develop && \
+
     R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
     R CMD INSTALL CoGAPS_*.tar.gz && \
     rm -rf /cogaps_src && \
