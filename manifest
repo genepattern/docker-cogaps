@@ -165,7 +165,7 @@ p11_value=none\=none;genome-wide\=genome-wide;single-cell\=single-cell
 
 p12_MODE=
 p12_TYPE=CHOICE
-p12_default_value=False
+p12_default_value=FALSE
 p12_description=Transpose the dataset.
 p12_fileFormat=
 p12_flag=
