@@ -16,6 +16,7 @@ os=any
 job.docker.image=job.docker.image=genepattern/docker-cogaps:v0.3
 job.cpuCount=8
 job.memory=32 Gb
+job.walltime: "36:00:00"
 p1_MODE=IN
 p1_TYPE=FILE
 p1_default_value=
