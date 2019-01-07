@@ -1,5 +1,5 @@
 [{name: "Basic parameters", 
-  parameters: ["input.file", "output.file", "num.iterations" , "single-cell"]}, 
+  parameters: ["input.file", "output.file",  "num.iterations" , "single-cell"]}, 
 {name: "Distributed CoGAPS Parameters (GWCoGAPS/scCoGAPS)", hidden: false, 
   parameters: ["distributed.method", "num.sets"]},
 
@@ -7,5 +7,5 @@
      parameters: ["start.at", "stop.at", "step"]},
 
  {name: "Miscellaneous", hidden:true, 
-  parameters: ["seed", "transpose.data", "standard.deviation.input.file"]}
+  parameters: ["seed", "transpose.data", "standard.deviation.input.file", "gene.names.file", "sample.names.file"]}
 ]

@@ -11,7 +11,7 @@ cran_packages <- c("Rcpp", "RColorBrewer", "gplots", "cluster", "shiny",
 #install.packages(cran_packages, repos='http://cran.us.r-project.org')
 
 # install dependencies hosted on BiocConductor
-bioc_packages <- c("BiocStyle", "BiocParallel", "SingleCellExperiment", "SummarizedExperiment", "RColorBrewer", "gplots")
+bioc_packages <- c("rhdf5", "BiocStyle", "BiocParallel", "SingleCellExperiment", "SummarizedExperiment", "RColorBrewer", "gplots")
 biocLite()
 biocLite(bioc_packages)
 

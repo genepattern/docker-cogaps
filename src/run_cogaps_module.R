@@ -34,6 +34,10 @@ option_list <- list(
   # Note: it's not necessary for the names to match here, it's just a convention
   # to keep things consistent.
   make_option("--input.file", dest="input.file"),
+
+  make_option("--gene.names.file", dest="gene.names.file"),
+  make_option("--sample.names.file", dest="sample.names.file"),
+
   make_option("--transpose.data", type="logical", dest="transpose.data"),
   make_option("--pattern.start", type="integer", dest="pattern.start"),
   make_option("--pattern.stop", type="integer", dest="pattern.stop"),
@@ -56,7 +60,6 @@ opts <- opt$options
 # Load some common GP utility code for handling GCT files and so on.  This is included
 # with the module and so it will be found in the same location as this script (libdir).
 source(file.path("/usr/local/bin/cogaps/", "common.R"))
-#source(file.path("/usr/local/bin/cogaps/", "override_plotP.R"))
 print(packageVersion("CoGAPS"))
 
 # Process the parameters.  
@@ -70,8 +73,33 @@ if (is.null(opts$stddev.input.file) || grepl("^[[:space:]]*$", opts$stddev.input
     }
     stddev_gct <- read.gct(opts$stddev.input.file)
     stddev_input <- as.matrix(stddev_gct[["data"]])
-    #stddev_input <- opts$stddev.input.file
 }
+
+if (is.null(opts$gene.names.file) || grepl("^[[:space:]]*$", opts$gene.names.file)) {
+   gene_names <- NULL
+} else {
+    if (!file.exists(opts$gene.names.file)) {
+        stop("Gene names tsv file does not exist")
+    }
+    # XXX HACK FOR TEST DATA WHILE WE FIGURE OUT THE FORMAT FOR 
+    # XXX GENE_NAMES AND SAMPLE_NAMES FILES - this assumes a 2 column TSV and we take the second col
+    gene_names <- scan(opts$gene.names.file, character(), quote="\"")
+    print("found gene names : ")
+    print(length(gene_names))
+}
+
+
+if (is.null(opts$sample.names.file) || grepl("^[[:space:]]*$", opts$sample.names.file)) {
+   sample_names <- NULL
+} else {
+    if (!file.exists(opts$sample.names.file)) {
+        stop("Sample names file does not exist")
+    }
+    sample_names <- scan(opts$sample.names.file, character(), quote="\"")
+    print("found sample names : ")
+    print(length(sample_names))
+}
+
 
 # Optparse will validate increment.value and convert it to a numeric value or give it the
 # default value of 10 if missing.  We must check for NA however (and NULL, to be safe) as
@@ -137,23 +165,32 @@ if (is.null(opts$pattern.step) || is.na(opts$pattern.step)) {
 patternRange <- seq(opts$pattern.start, opts$pattern.stop, opts$pattern.step)
 
 # Load the GCT input file.
-print("Loading gct file now")
+print("Loading input file now")
 if (!file.exists(opts$input.file)) {
-    stop("GCT file does not exist")
+    stop("Input GCT or mtx file does not exist")
 }
-gct <- read.gct(opts$input.file)
-data_input <- as.matrix(gct[["data"]])
-# data_input <- opts$input.file
 
+# if its a gct, read it into a frame.  If mtx, just pass in the path as a string
+# if (endsWith(opts$input.file, ".gct")){
+#if (grepl("gct$|GCT$",opts$input.file)){
+#    gct <- read.gct(opts$input.file)
+#    data_input <- as.matrix(gct[["data"]])
+#} else {
+data_input <- opts$input.file
+#}
+#source("/Users/liefeld/GenePattern/gp_dev/docker/docker-cogaps/test/cogaps/check.R")
 # loop over patternRange
 files2zip = {} 
 cogapsResult <- list()
 for (nPatterns in patternRange)
 {
+
+    # its a GCT file so gene/sample names are in the data frame
+    #
     cogapsResult[[nPatterns]] <- CoGAPS(data=data_input, params=params,
         nPatterns=nPatterns, transposeData=opts$transpose.data,
-        nThreads=opts$num.threads, uncertainty=stddev_input)
-  
+        nThreads=opts$num.threads, uncertainty=stddev_input,
+        geneNames=gene_names, sampleNames=sample_names)
     currentResult <- cogapsResult[[nPatterns]]
     
     # don't use sub directories until the GPNB can handle them properly
@@ -190,6 +227,5 @@ write.table(xx, file=chiFilename, row.names=TRUE, col.names=TRUE)
 files2zip = c(files2zip, chiPdfFilename, chiFilename)
 zipFileName=paste(opts$output.file, ".zip", sep="")
 zip(zipfile=zipFileName, files=files2zip)
-
 
 
