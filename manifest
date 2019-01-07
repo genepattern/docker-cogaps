@@ -2,10 +2,14 @@
 #CoGAPS
 #Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.2
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.1.9
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data> <gene.names.file> <sample.names.file>
+
+#commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data> 
+
+
 cpuType=any
 description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
 fileFormat=gct
@@ -13,9 +17,10 @@ language=any
 minGenePatternVersion=3.9.13
 name=CoGAPS
 os=any
-job.docker.image=job.docker.image=genepattern/docker-cogaps:v0.3
+job.docker.image=genepattern/docker-cogaps:v0.3
 job.cpuCount=8
 job.memory=32 Gb
+job.walltime: "36:00:00"
 p1_MODE=IN
 p1_TYPE=FILE
 p1_default_value=
@@ -164,7 +169,7 @@ p11_value=none\=none;genome-wide\=genome-wide;single-cell\=single-cell
 
 p12_MODE=
 p12_TYPE=CHOICE
-p12_default_value=False
+p12_default_value=FALSE
 p12_description=Transpose the dataset.
 p12_fileFormat=
 p12_flag=
@@ -175,6 +180,35 @@ p12_prefix=
 p12_prefix_when_specified=
 p12_type=java.lang.String
 p12_value=TRUE\=True;FALSE\=False
+
+p13_MODE=IN
+p13_TYPE=FILE
+p13_default_value=
+p13_description=A TSV file containing the gene names for an mtx input data file
+p13_fileFormat=tsv
+p13_flag=--gene.names.file\=
+p13_name=gene.names.file
+p13_numValues=0..1
+p13_optional=on
+p13_prefix=--gene.names.file\=
+p13_prefix_when_specified=--gene.names.file\=
+p13_type=java.io.File
+p13_value=
+
+p14_MODE=IN
+p14_TYPE=FILE
+p14_default_value=
+p14_description=A TSV file containing the sample names for an mtx input data file
+p14_fileFormat=tsv
+p14_flag=--sample.names.file\=
+p14_name=sample.names.file
+p14_numValues=0..1
+p14_optional=on
+p14_prefix=--sample.names.file\=
+p14_prefix_when_specified=--sample.names.file\=
+p14_type=java.io.File
+p14_value=
+
 
 
 privacy=public

@@ -4,8 +4,9 @@ FROM r-base:3.5.1
 
 RUN mkdir /build
 
+# apt-get install -t unstable libmariadbclient-dev  --yes && \
+
 RUN apt-get update && apt-get upgrade --yes && \
-    apt-get install -t unstable libmariadbclient-dev  --yes && \
     apt-get install -t unstable libssl-dev  --yes && \
     apt-get install libxml2-dev --yes && \
     apt-get install libcurl4-gnutls-dev --yes && \
