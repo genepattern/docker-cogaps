@@ -5,7 +5,7 @@ JVMLevel=
 LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.1.9
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data> <gene.names.file> <sample.names.file>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data> <gene.names.file> <sample.names.file> <github.tag>
 
 #commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data> 
 
@@ -17,7 +17,7 @@ language=any
 minGenePatternVersion=3.9.13
 name=CoGAPS
 os=any
-job.docker.image=genepattern/docker-cogaps:v0.3
+job.docker.image=genepattern/docker-cogaps:jtl
 job.cpuCount=8
 job.memory=32 Gb
 job.walltime: "36:00:00"
@@ -209,6 +209,19 @@ p14_prefix_when_specified=--sample.names.file\=
 p14_type=java.io.File
 p14_value=
 
+p15_MODE=
+p15_TYPE=TEXT
+p15_default_value=
+p15_description=Alternate github tag to use to pull a different version of cogaps to run - for testing and development only.
+p15_fileFormat=
+p15_flag=--github.tag\=
+p15_name=github.tag
+p15_numValues=0..1
+p15_optional=on
+p15_prefix=--github.prefix\=
+p15_prefix_when_specified=--github.tag\=
+p15_type=java.lang.String
+p15_value=
 
 
 privacy=public

@@ -16,7 +16,7 @@
 # GenePattern to flag the job as failing even when nothing went wrong. 
 suppressMessages(suppressWarnings(library(getopt)))
 suppressMessages(suppressWarnings(library(optparse)))
-suppressMessages(suppressWarnings(library(CoGAPS)))
+# suppressMessages(suppressWarnings(library(CoGAPS)))
 
 # Print the sessionInfo so that there is a listing of loaded packages, 
 # the current version of R, and other environmental information in our
@@ -28,7 +28,6 @@ sessionInfo()
 # https://cran.r-project.org/web/packages/optparse/index.html
 arguments <- commandArgs(trailingOnly=TRUE)
 
-print(packageVersion("CoGAPS"))
 # Declare an option list for optparse to use in parsing the command line.
 option_list <- list(
   # Note: it's not necessary for the names to match here, it's just a convention
@@ -49,7 +48,8 @@ option_list <- list(
   make_option("--num.sets", type="integer", dest="num.sets"),
   make_option("--num.threads", type="integer", dest="num.threads"),
   make_option("--stddev.input.file", dest="stddev.input.file"),
-  make_option("--output.file", dest="output.file")
+  make_option("--output.file", dest="output.file"),
+  make_option("--github.tag", dest="github.tag")
 )
 
 # Parse the command line arguments with the option list, printing the result
@@ -81,11 +81,9 @@ if (is.null(opts$gene.names.file) || grepl("^[[:space:]]*$", opts$gene.names.fil
     if (!file.exists(opts$gene.names.file)) {
         stop("Gene names tsv file does not exist")
     }
-    # XXX HACK FOR TEST DATA WHILE WE FIGURE OUT THE FORMAT FOR 
-    # XXX GENE_NAMES AND SAMPLE_NAMES FILES - this assumes a 2 column TSV and we take the second col
     gene_names <- scan(opts$gene.names.file, character(), quote="\"")
-    print("found gene names : ")
-    print(length(gene_names))
+    #print("found gene names : ")
+    #print(length(gene_names))
 }
 
 
@@ -96,9 +94,23 @@ if (is.null(opts$sample.names.file) || grepl("^[[:space:]]*$", opts$sample.names
         stop("Sample names file does not exist")
     }
     sample_names <- scan(opts$sample.names.file, character(), quote="\"")
-    print("found sample names : ")
-    print(length(sample_names))
+    #print("found sample names : ")
+    #print(length(sample_names))
 }
+
+if (is.null(opts$github.tag)){
+    print("================== >>>>>>         Using default CoGAPS version")
+} else {
+    print("Trying to load a new CoGAPS version from github ")
+    print(opts$github.tag)
+    install.packages("remotes") 
+    source("https://bioconductor.org/biocLite.R")
+    #biocLite("FertigLab/CoGAPS", ask=FALSE, dependencies = TRUE, build_vignettes = TRUE, ref="v3.3.24")
+    biocLite("FertigLab/CoGAPS", ask=FALSE, dependencies = TRUE, build_vignettes = TRUE, ref=opts$github.tag)
+    suppressMessages(suppressWarnings(library(CoGAPS))) 
+}
+
+
 
 
 # Optparse will validate increment.value and convert it to a numeric value or give it the
@@ -170,18 +182,22 @@ if (!file.exists(opts$input.file)) {
     stop("Input GCT or mtx file does not exist")
 }
 
-# if its a gct, read it into a frame.  If mtx, just pass in the path as a string
-# if (endsWith(opts$input.file, ".gct")){
-#if (grepl("gct$|GCT$",opts$input.file)){
-#    gct <- read.gct(opts$input.file)
-#    data_input <- as.matrix(gct[["data"]])
-#} else {
 data_input <- opts$input.file
-#}
-#source("/Users/liefeld/GenePattern/gp_dev/docker/docker-cogaps/test/cogaps/check.R")
-# loop over patternRange
 files2zip = {} 
 cogapsResult <- list()
+
+#if (is.null(opts$github.tag)){
+#    print("================== >>>>>>         Using default CoGAPS version")
+#} else {
+#    print("Trying to load a new CoGAPS version from github")
+#    source("https://bioconductor.org/biocLite.R")
+#    biocLite("FertigLab/CoGAPS", dependencies = TRUE, build_vignettes = TRUE, ref="v3.3.24")
+#}
+
+suppressMessages(suppressWarnings(library(CoGAPS)))
+print(packageVersion("CoGAPS"))
+
+
 for (nPatterns in patternRange)
 {
 

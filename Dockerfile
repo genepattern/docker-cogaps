@@ -57,5 +57,5 @@ RUN apt-get update -y && \
 ENV PATH "$PATH:/usr/local/bin/cogaps"
 COPY src/* /usr/local/bin/cogaps/
  
-CMD ["Rscript", "/usr/local/bin/cogaps/run_gp_tutorial_module.R" ]
+CMD ["Rscript", "/usr/local/bin/cogaps/run_cogaps_module.R" ]
 
