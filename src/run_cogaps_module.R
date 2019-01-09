@@ -107,9 +107,8 @@ if (is.null(opts$github.tag)){
     source("https://bioconductor.org/biocLite.R")
     #biocLite("FertigLab/CoGAPS", ask=FALSE, dependencies = TRUE, build_vignettes = TRUE, ref="v3.3.24")
     biocLite("FertigLab/CoGAPS", ask=FALSE, dependencies = TRUE, build_vignettes = TRUE, ref=opts$github.tag)
-    suppressMessages(suppressWarnings(library(CoGAPS))) 
 }
-
+suppressMessages(suppressWarnings(library(CoGAPS)))
 
 
 
