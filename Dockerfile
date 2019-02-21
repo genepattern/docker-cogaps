@@ -32,7 +32,6 @@ COPY Rprofile.gp.site /usr/lib/R/etc/Rprofile.site
 ENV R_LIBS_S3=/genepattern-server/Rlibraries/R344/rlibs
 ENV R_LIBS=/usr/local/lib/R/site-library
 ENV R_HOME=/usr/local/lib64/R
-COPY install_stuff.R /build/source/install_stuff.R
 
 # install R dependencies
 RUN R -e 'install.packages("remotes")'
