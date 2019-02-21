@@ -5,14 +5,11 @@ JVMLevel=
 LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.1.9
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data> <gene.names.file> <sample.names.file> <github.tag>
-
-#commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --input.file\=<input.file>  --num.threads=<job.cpuCount> --single-cell\=<single-cell>  <standard.deviation.input.file> --num.iterations\=<num.iterations>  --pattern.start\=<start.at> --pattern.stop\=<stop.at> --pattern.step\=<step> --seed\=<seed> --output.file\=<output.file>  --distributed.method\=<distributed.method> --num.sets\=<num.sets> --transpose.data\=<transpose.data> 
-
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --data.file\=<data.file>  --output.file\=<output.file> --param.file\=<param.file> --n.patterns\=<n.patterns> --transpose.data\=<transpose.data> --n.threads=<job.cpuCount> --github.tag=<github.tag>
 
 cpuType=any
 description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
-fileFormat=gct
+fileFormat=mtx
 language=any
 minGenePatternVersion=3.9.13
 name=CoGAPS
@@ -21,207 +18,91 @@ job.docker.image=genepattern/docker-cogaps:v0.6
 job.cpuCount=8
 job.memory=32 Gb
 job.walltime: "36:00:00"
+
 p1_MODE=IN
 p1_TYPE=FILE
 p1_default_value=
-p1_description=A GCT file containing the gene expression profiles
-p1_fileFormat=gct
+p1_description=A csv/tsv/gct/mtx file containing gene expression data
+p1_fileFormat=mtx
 p1_flag=
-p1_name=input.file
+p1_name=data.file
 p1_numValues=1..1
 p1_optional=
 p1_prefix=
 p1_prefix_when_specified=
 p1_type=java.io.File
 p1_value=
-p2_MODE=IN
-p2_TYPE=FILE
-p2_default_value=
-p2_description=A GCT file containing the standard deviation model for the gene expression profiles
-p2_fileFormat=gct
-p2_flag=--stddev.input.file\=
-p2_name=standard.deviation.input.file
-p2_numValues=0..1
-p2_optional=on
-p2_prefix=--stddev.input.file\=
-p2_prefix_when_specified=--stddev.input.file\=
-p2_type=java.io.File
+
+p2_MODE=
+p2_TYPE=TEXT
+p2_default_value=<data.file_basename>-result
+p2_description=Output file name
+p2_fileFormat=
+p2_flag=
+p2_name=output.file
+p2_numValues=1..1
+p2_optional=
+p2_prefix=
+p2_prefix_when_specified=
+p2_type=java.lang.String
 p2_value=
-p3_MODE=
-p3_TYPE=CHOICE
-p3_default_value=FALSE
-p3_description=Perform single-cell analysis.
-p3_fileFormat=
+
+p3_MODE=IN
+p3_TYPE=FILE
+p3_default_value=
+p3_description=An rds file containg a CogapsParams object
+p3_fileFormat=rds
 p3_flag=
-p3_name=single-cell
+p3_name=param.file
 p3_numValues=1..1
 p3_optional=
 p3_prefix=
 p3_prefix_when_specified=
-p3_type=java.lang.String
-p3_value=TRUE\=True;FALSE\=False
+p3_type=java.io.File
+p3_value=
+
 p4_MODE=
 p4_TYPE=TEXT
-p4_default_value=500
-p4_description=Number of iterations
+p4_default_value=25
+p4_description=Number of Patterns
 p4_fileFormat=
 p4_flag=
-p4_name=num.iterations
+p4_name=n.patterns
 p4_numValues=1..1
 p4_optional=
 p4_prefix=
 p4_prefix_when_specified=
 p4_type=java.lang.String
 p4_value=
+
 p5_MODE=
-p5_TYPE=TEXT
-p5_default_value=<input.file_basename>.cogaps
-p5_description=Output file name
+p5_TYPE=CHOICE
+p5_default_value=FALSE
+p5_description=Transpose the dataset before running
 p5_fileFormat=
 p5_flag=
-p5_name=output.file
+p5_name=transpose.data
 p5_numValues=1..1
 p5_optional=
 p5_prefix=
 p5_prefix_when_specified=
 p5_type=java.lang.String
-p5_value=
+p5_value=TRUE\=True;FALSE\=False
+
 p6_MODE=
 p6_TYPE=TEXT
-p6_default_value=1
-p6_description=Step through pattern range sweep (from start to stop) by this number. E.g. if start is 2 and end is 10, CoGAPS will test for pattern values 2,4,6,8,10.
+p6_default_value=
+p6_description=Alternate github tag to use to pull a different version of cogaps to run - for testing and development only.
 p6_fileFormat=
-p6_flag=
-p6_name=step
-p6_numValues=1..1
-p6_optional=
-p6_prefix=
-p6_prefix_when_specified=
+p6_flag=--github.tag\=
+p6_name=github.tag
+p6_numValues=0..1
+p6_optional=on
+p6_prefix=--github.prefix\=
+p6_prefix_when_specified=--github.tag\=
 p6_type=java.lang.String
 p6_value=
-p7_MODE=
-p7_TYPE=TEXT
-p7_default_value=123
-p7_description=Random number generator seed
-p7_fileFormat=
-p7_flag=
-p7_name=seed
-p7_numValues=1..1
-p7_optional=
-p7_prefix=
-p7_prefix_when_specified=
-p7_type=java.lang.String
-p7_value=
-p8_MODE=
-p8_TYPE=TEXT
-p8_default_value=2
-p8_description=Begin pattern range sweep with this many patterns.
-p8_fileFormat=
-p8_flag=
-p8_name=start.at
-p8_numValues=1..1
-p8_optional=
-p8_prefix=
-p8_prefix_when_specified=
-p8_type=java.lang.String
-p8_value=
-p9_MODE=
-p9_TYPE=TEXT
-p9_default_value=4
-p9_description=Stop pattern range sweep at this many patterns.
-p9_fileFormat=
-p9_flag=
-p9_name=stop.at
-p9_numValues=1..1
-p9_optional=
-p9_prefix=
-p9_prefix_when_specified=
-p9_type=java.lang.String
-p9_value=
 
-p10_MODE=
-p10_TYPE=TEXT
-p10_default_value=4
-p10_description=Number of sets.
-p10_fileFormat=
-p10_flag=
-p10_name=num.sets
-p10_numValues=1..1
-p10_optional=
-p10_prefix=
-p10_prefix_when_specified=
-p10_type=java.lang.String
-p10_value=
-
-p11_MODE=
-p11_TYPE=java.lang.String
-p11_default_value=none
-p11_description=CoGAPS mode, none, genome-wide or single-cell
-p11_fileFormat=
-p11_flag=
-p11_name=distributed.method
-p11_numValues=1..1
-p11_optional=
-p11_prefix=
-p11_prefix_when_specified=
-p11_type=java.lang.String
-p11_value=none\=none;genome-wide\=genome-wide;single-cell\=single-cell
-
-p12_MODE=
-p12_TYPE=CHOICE
-p12_default_value=FALSE
-p12_description=Transpose the dataset.
-p12_fileFormat=
-p12_flag=
-p12_name=transpose.data
-p12_numValues=1..1
-p12_optional=
-p12_prefix=
-p12_prefix_when_specified=
-p12_type=java.lang.String
-p12_value=TRUE\=True;FALSE\=False
-
-p13_MODE=IN
-p13_TYPE=FILE
-p13_default_value=
-p13_description=A TSV file containing the gene names for an mtx input data file
-p13_fileFormat=tsv
-p13_flag=--gene.names.file\=
-p13_name=gene.names.file
-p13_numValues=0..1
-p13_optional=on
-p13_prefix=--gene.names.file\=
-p13_prefix_when_specified=--gene.names.file\=
-p13_type=java.io.File
-p13_value=
-
-p14_MODE=IN
-p14_TYPE=FILE
-p14_default_value=
-p14_description=A TSV file containing the sample names for an mtx input data file
-p14_fileFormat=tsv
-p14_flag=--sample.names.file\=
-p14_name=sample.names.file
-p14_numValues=0..1
-p14_optional=on
-p14_prefix=--sample.names.file\=
-p14_prefix_when_specified=--sample.names.file\=
-p14_type=java.io.File
-p14_value=
-
-p15_MODE=
-p15_TYPE=TEXT
-p15_default_value=
-p15_description=Alternate github tag to use to pull a different version of cogaps to run - for testing and development only.
-p15_fileFormat=
-p15_flag=--github.tag\=
-p15_name=github.tag
-p15_numValues=0..1
-p15_optional=on
-p15_prefix=--github.prefix\=
-p15_prefix_when_specified=--github.tag\=
-p15_type=java.lang.String
-p15_value=
 
 
 privacy=public

@@ -1,11 +1,5 @@
-[{name: "Basic parameters", 
-  parameters: ["input.file", "output.file",  "num.iterations" , "single-cell"]}, 
-{name: "Distributed CoGAPS Parameters (GWCoGAPS/scCoGAPS)", hidden: false, 
-  parameters: ["distributed.method", "num.sets"]},
-
-  {name: "Pattern Search Space", hidden: false,
-     parameters: ["start.at", "stop.at", "step"]},
-
+[{name: "Basic Parameters", 
+  parameters: ["input.file", "output.file", "param.file", "n.patterns"]}, 
  {name: "Miscellaneous", hidden:true, 
-  parameters: ["seed", "transpose.data", "standard.deviation.input.file", "gene.names.file", "sample.names.file", "github.tag"]}
+  parameters: ["transpose.data", "n.threads", "github.tag"]}
 ]

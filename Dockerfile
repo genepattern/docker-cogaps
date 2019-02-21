@@ -9,6 +9,7 @@ RUN mkdir /build
 RUN apt-get update && apt-get upgrade --yes && \
     apt-get install -t unstable libssl-dev  --yes && \
     apt-get install libxml2-dev --yes && \
+    apt-get install libssl-dev -y && \
     apt-get install libcurl4-gnutls-dev --yes && \
     apt-get install mesa-common-dev --yes && \ 
     apt-get update && apt-get install -y --no-install-recommends apt-utils && \
@@ -33,25 +34,36 @@ ENV R_LIBS=/usr/local/lib/R/site-library
 ENV R_HOME=/usr/local/lib64/R
 COPY install_stuff.R /build/source/install_stuff.R
 
-RUN Rscript /build/source/install_stuff.R
+# install R dependencies
+RUN R -e 'install.packages("remotes")'
+RUN R -e 'install.packages("BiocManager")'
+RUN R -e 'BiocManager::install("BiocParallel")'
+RUN R -e 'BiocManager::install("cluster")'
+RUN R -e 'BiocManager::install("data.table")'
+RUN R -e 'BiocManager::install("methods")'
+RUN R -e 'BiocManager::install("gplots")'
+RUN R -e 'BiocManager::install("graphics")'
+RUN R -e 'BiocManager::install("grDevices")'
+RUN R -e 'BiocManager::install("RColorBrewer")'
+RUN R -e 'BiocManager::install("Rcpp")'
+RUN R -e 'BiocManager::install("S4Vectors")'
+RUN R -e 'BiocManager::install("stats")'
+RUN R -e 'BiocManager::install("tools")'
+RUN R -e 'BiocManager::install("utils")'
+RUN R -e 'BiocManager::install("rhdf5")'
+RUN R -e 'BiocManager::install("testthat")'
+RUN R -e 'BiocManager::install("knitr")'
+RUN R -e 'BiocManager::install("rmarkdown")'
+RUN R -e 'BiocManager::install("BiocStyle")'
+RUN R -e 'BiocManager::install("Rcpp")'
+RUN R -e 'BiocManager::install("SummarizedExperiment")'
+RUN R -e 'BiocManager::install("SingleCellExperiment")'
+RUN R -e 'BiocManager::install("optparse")'
 
-RUN apt-get update -y && \
-    apt-get install -y  -t unstable git && \
-    apt install -t unstable -y  libomp-dev && \
-    mkdir /cogaps_src &&\
-    cd /cogaps_src && \
-    git clone https://github.com/FertigLab/CoGAPS.git && \
-    cd CoGAPS && \
-    echo "layer change to forece rebuild" && \
-    git checkout develop && \
-    R CMD build --no-build-vignettes /cogaps_src/CoGAPS && \
-    R CMD INSTALL CoGAPS_*.tar.gz && \
-    rm -rf /cogaps_src && \
-    rm -rf /var/lib/apt/lists/*
-
-# git checkout master && \
-#     git checkout 40c26bed3b62ba4cfaa5aeaf2f265763ee82bfe4 && \
-
+# install latest version of CoGAPS from github
+RUN echo "force rebuild 1" && \
+    R -e 'BiocManager::install("FertigLab/CoGAPS", dependencies=FALSE)' && \
+    R -e 'packageVersion("CoGAPS")'
 
 # the module files are set into /usr/local/bin/cogaps
 ENV PATH "$PATH:/usr/local/bin/cogaps"
