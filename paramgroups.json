@@ -3,5 +3,5 @@
  {name: "Parameter File", hidden:true,
   parameters: ["param.file"]},
  {name: "Miscellaneous", hidden:true, 
-  parameters: ["transpose.data", "num.threads", "github.tag"]}
+  parameters: ["transpose.data", "github.tag"]}
 ]

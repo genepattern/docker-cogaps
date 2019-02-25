@@ -5,7 +5,7 @@ JVMLevel=
 LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.1.9
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --data.file\=<data.file>  --output.file\=<output.file> --param.file\=<param.file> --n.patterns\=<n.patterns> --transpose.data\=<transpose.data> --n.threads=<job.cpuCount> --github.tag=<github.tag>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --data.file\=<data.file>  --output.file\=<output.file> --param.file\=<param.file> --n.patterns\=<num.patterns> --transpose.data\=<transpose.data> --n.threads=<job.cpuCount> --github.tag=<github.tag> --num.iterations=<num.iterations>
 
 cpuType=any
 description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
@@ -105,31 +105,17 @@ p6_value=TRUE\=True;FALSE\=False
 
 p7_MODE=
 p7_TYPE=TEXT
-p7_default_value=1
-p7_description=Number of Threads
+p7_default_value=
+p7_description=Alternate github tag to use to pull a different version of cogaps to run - for testing and development only.
 p7_fileFormat=
-p7_flag=
-p7_name=num.threads
-p7_numValues=1..1
-p7_optional=
-p7_prefix=
-p7_prefix_when_specified=
+p7_flag=--github.tag\=
+p7_name=github.tag
+p7_numValues=0..1
+p7_optional=on
+p7_prefix=--github.tag.prefix\=
+p7_prefix_when_specified=--github.tag\=
 p7_type=java.lang.String
 p7_value=
-
-p8_MODE=
-p8_TYPE=TEXT
-p8_default_value=
-p8_description=Alternate github tag to use to pull a different version of cogaps to run - for testing and development only.
-p8_fileFormat=
-p8_flag=--github.tag\=
-p8_name=github.tag
-p8_numValues=0..1
-p8_optional=on
-p8_prefix=--github.tag.prefix\=
-p8_prefix_when_specified=--github.tag\=
-p8_type=java.lang.String
-p8_value=
 
 
 
