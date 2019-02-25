@@ -1,15 +1,46 @@
 #!/bin/bash
 
 Rscript --no-save --quiet --slave --no-restore ../../src/run_cogaps_module.R \
-    --input.file=data/all_aml_test.gct \
-    --transpose.data=false \
-    --pattern.start=2 \
-    --pattern.stop=4 \
-    --pattern.step=1 \
-    --num.iterations=1000 \
-    --seed=123 \
-    --single.cell=false \
-    --distributed.method=none \
-    --num.sets=4 \
-    --num.threads=1 \
-    --output.file=testLocalOutputs
+    --data.file=data/GIST.gct \
+    --output.file=test-output \
+    --num.patterns=3 \
+    --num.iterations=5000
+
+Rscript --no-save --quiet --slave --no-restore ../../src/run_cogaps_module.R \
+    --data.file=data/GIST.gct \
+    --output.file=test-output \
+    --num.patterns=3 \
+    --num.iterations=5000 \
+    --transpose.data=TRUE
+
+Rscript --no-save --quiet --slave --no-restore ../../src/run_cogaps_module.R \
+    --data.file=data/GIST.gct \
+    --output.file=test-output \
+    --num.patterns=3 \
+    --num.iterations=5000 \
+    --num.threads=2
+
+Rscript --no-save --quiet --slave --no-restore ../../src/run_cogaps_module.R \
+    --data.file=data/GIST.gct \
+    --output.file=test-output \
+    --num.patterns=3 \
+    --num.iterations=5000 \
+    --param.file=data/test-params.rds
+
+Rscript --no-save --quiet --slave --no-restore ../../src/run_cogaps_module.R \
+    --data.file=data/GIST.gct \
+    --output.file=test-output \
+    --num.patterns=3 \
+    --num.iterations=5000 \
+    --param.file=data/test-params-gw.rds
+
+Rscript --no-save --quiet --slave --no-restore ../../src/run_cogaps_module.R \
+    --data.file=data/GIST.gct \
+    --output.file=test-output \
+    --num.patterns=3 \
+    --num.iterations=5000 \
+    --param.file=data/test-params-sc.rds \
+    --transpose.data=TRUE
+
+rm -f test-output.rds
+rm -f gaps_checkpoint.out

@@ -1,8 +1,3 @@
-print("root:")
-system("ls /")
-print("data:")
-system("ls /data")
-
 ## The Regents of the University of California and The Broad Institute
 ## SOFTWARE COPYRIGHT NOTICE AGREEMENT
 ## This software and its documentation are copyright (2018) by the

@@ -1,15 +1,27 @@
-LOCAL_DIR=$PWD
+docker build -t cogaps_module ../..
 
-COMMAND_LINE="Rscript --no-save --quiet --slave --no-restore \
+LOCAL_DIR=$PWD
+CMD="Rscript --no-save --quiet --slave --no-restore \
     /usr/local/bin/cogaps/run_cogaps_module.R \
-    --data.file=/data/GIST.gct \
+    --data.file=$LOCAL_DIR/data/GIST.gct \
     --output.file=test-output \
     --num.patterns=3 \
     --num.iterations=5000 \
-    "
+    --transpose.data=TRUE \
+"
 
-docker build -t cogaps_module ../..
+declare -a tests=(
+                  "$CMD"
+                  "$CMD --transpose-data=TRUE"
+                  "$CMD --num.threads=2"
+                  "$CMD --github.tag=v3.3.39"
+                  "$CMD --param.file=$LOCAL_DIR/data/test-params.rds"
+                  "$CMD --param.file=$LOCAL_DIR/data/test-params-gw.rds"
+                  "$CMD --param.file=$LOCAL_DIR/data/test-params-sc.rds --transpose.data=TRUE"
+                 )
 
-docker run -v $LOCAL_DIR/data:/data -t cogaps_module $COMMAND_LINE
-
+for tst in "${tests[@]}"
+do
+    docker run -v $LOCAL_DIR:$LOCAL_DIR -t cogaps_module $tst
+done
 
