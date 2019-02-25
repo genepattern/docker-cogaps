@@ -1,3 +1,8 @@
+#!/bin/bash
+
+# this file runs through a bunch of test cases by first creating a local build
+# of the docker image, and then running the docker image with each test case
+
 docker build -t cogaps_module ../..
 
 LOCAL_DIR=$PWD

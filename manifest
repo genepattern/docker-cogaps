@@ -80,12 +80,12 @@ p5_TYPE=FILE
 p5_default_value=
 p5_description=An rds file containg a CogapsParams object
 p5_fileFormat=rds
-p5_flag=
+p5_flag=--param.file\=
 p5_name=param.file
-p5_numValues=1..1
-p5_optional=
-p5_prefix=
-p5_prefix_when_specified=
+p5_numValues=0..1
+p5_optional=on
+p5_prefix=--param.file.prefix\=
+p5_prefix_when_specified=--param.file\=
 p5_type=java.io.File
 p5_value=
 
@@ -110,10 +110,10 @@ p7_description=Number of Threads
 p7_fileFormat=
 p7_flag=
 p7_name=num.threads
-p7_numValues=0..1
-p7_optional=on
-p7_prefix=--num.threads.prefix\=
-p7_prefix_when_specified=--num.threads.prefix\=
+p7_numValues=1..1
+p7_optional=
+p7_prefix=
+p7_prefix_when_specified=
 p7_type=java.lang.String
 p7_value=
 
@@ -126,7 +126,7 @@ p8_flag=--github.tag\=
 p8_name=github.tag
 p8_numValues=0..1
 p8_optional=on
-p8_prefix=--github.prefix\=
+p8_prefix=--github.tag.prefix\=
 p8_prefix_when_specified=--github.tag\=
 p8_type=java.lang.String
 p8_value=

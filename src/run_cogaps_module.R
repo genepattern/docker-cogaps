@@ -63,7 +63,7 @@ params <- setParam(params, "nPatterns", opts$num.patterns)
 params <- setParam(params, "nIterations", opts$num.iterations)
 
 if (!is.null(params@distributed))
-    opts$num.nhreads <- 1
+    opts$num.threads <- 1
 
 gapsResult <- CoGAPS(data=opts$data.file, params=params,
     nThreads=opts$num.threads, transposeData=opts$transpose.data)

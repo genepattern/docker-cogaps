@@ -60,7 +60,7 @@ RUN R -e 'BiocManager::install("SingleCellExperiment")'
 RUN R -e 'BiocManager::install("optparse")'
 
 # install latest version of CoGAPS from github
-RUN echo "force rebuild 1" && \
+RUN echo "force rebuild 2" && \
     R -e 'BiocManager::install("FertigLab/CoGAPS", dependencies=FALSE)' && \
     R -e 'packageVersion("CoGAPS")'
 
