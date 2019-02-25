@@ -47,27 +47,27 @@ p2_prefix_when_specified=
 p2_type=java.lang.String
 p2_value=
 
-p3_MODE=IN
-p3_TYPE=FILE
-p3_default_value=
-p3_description=An rds file containg a CogapsParams object
-p3_fileFormat=rds
+p3_MODE=
+p3_TYPE=TEXT
+p3_default_value=25
+p3_description=Number of Patterns
+p3_fileFormat=
 p3_flag=
-p3_name=param.file
+p3_name=num.patterns
 p3_numValues=1..1
 p3_optional=
 p3_prefix=
 p3_prefix_when_specified=
-p3_type=java.io.File
+p3_type=java.lang.String
 p3_value=
 
 p4_MODE=
 p4_TYPE=TEXT
-p4_default_value=25
-p4_description=Number of Patterns
+p4_default_value=50000
+p4_description=Number of Iterations
 p4_fileFormat=
 p4_flag=
-p4_name=n.patterns
+p4_name=num.iterations
 p4_numValues=1..1
 p4_optional=
 p4_prefix=
@@ -75,33 +75,62 @@ p4_prefix_when_specified=
 p4_type=java.lang.String
 p4_value=
 
-p5_MODE=
-p5_TYPE=CHOICE
-p5_default_value=FALSE
-p5_description=Transpose the dataset before running
-p5_fileFormat=
+p5_MODE=IN
+p5_TYPE=FILE
+p5_default_value=
+p5_description=An rds file containg a CogapsParams object
+p5_fileFormat=rds
 p5_flag=
-p5_name=transpose.data
+p5_name=param.file
 p5_numValues=1..1
 p5_optional=
 p5_prefix=
 p5_prefix_when_specified=
-p5_type=java.lang.String
-p5_value=TRUE\=True;FALSE\=False
+p5_type=java.io.File
+p5_value=
 
 p6_MODE=
-p6_TYPE=TEXT
-p6_default_value=
-p6_description=Alternate github tag to use to pull a different version of cogaps to run - for testing and development only.
+p6_TYPE=CHOICE
+p6_default_value=FALSE
+p6_description=Transpose the dataset before running
 p6_fileFormat=
-p6_flag=--github.tag\=
-p6_name=github.tag
-p6_numValues=0..1
-p6_optional=on
-p6_prefix=--github.prefix\=
-p6_prefix_when_specified=--github.tag\=
+p6_flag=
+p6_name=transpose.data
+p6_numValues=1..1
+p6_optional=
+p6_prefix=
+p6_prefix_when_specified=
 p6_type=java.lang.String
-p6_value=
+p6_value=TRUE\=True;FALSE\=False
+
+p7_MODE=
+p7_TYPE=TEXT
+p7_default_value=1
+p7_description=Number of Threads
+p7_fileFormat=
+p7_flag=
+p7_name=num.threads
+p7_numValues=0..1
+p7_optional=on
+p7_prefix=--num.threads.prefix\=
+p7_prefix_when_specified=--num.threads.prefix\=
+p7_type=java.lang.String
+p7_value=
+
+p8_MODE=
+p8_TYPE=TEXT
+p8_default_value=
+p8_description=Alternate github tag to use to pull a different version of cogaps to run - for testing and development only.
+p8_fileFormat=
+p8_flag=--github.tag\=
+p8_name=github.tag
+p8_numValues=0..1
+p8_optional=on
+p8_prefix=--github.prefix\=
+p8_prefix_when_specified=--github.tag\=
+p8_type=java.lang.String
+p8_value=
+
 
 
 

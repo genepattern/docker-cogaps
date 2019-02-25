@@ -1,3 +1,8 @@
+print("root:")
+system("ls /")
+print("data:")
+system("ls /data")
+
 ## The Regents of the University of California and The Broad Institute
 ## SOFTWARE COPYRIGHT NOTICE AGREEMENT
 ## This software and its documentation are copyright (2018) by the
@@ -30,11 +35,12 @@ arguments <- commandArgs(trailingOnly=TRUE)
 option_list <- list(
     make_option("--data.file", dest="data.file"),
     make_option("--output.file", dest="output.file"),
-    make_option("--param.file", dest="param.file"),
-    make_option("--n.patterns", type="integer", dest="n.patterns"),
-    make_option("--transpose.data", type="logical", dest="transpose.data"),
-    make_option("--n.threads", type="integer", dest="n.threads"),
-    make_option("--github.tag", dest="github.tag")
+    make_option("--num.patterns", type="integer", dest="num.patterns"),
+    make_option("--num.iterations", type="integer", dest="num.iterations", default=50000),
+    make_option("--param.file", dest="param.file", default=NULL),
+    make_option("--transpose.data", type="logical", dest="transpose.data", default=FALSE),
+    make_option("--num.threads", type="integer", dest="num.threads", default=1),
+    make_option("--github.tag", dest="github.tag", default=NULL)
 )
 
 # Parse the command line arguments with the option list, printing the result
@@ -52,13 +58,19 @@ print(packageVersion("CoGAPS"))
 cat(CoGAPS::buildReport())
 suppressMessages(suppressWarnings(library(CoGAPS)))
 
-params <- readRDS(opts$param.file)
-params <- setParam(params, "nPatterns", opts$n.patterns)
+if (!is.null(opts$param.file)) {
+    params <- readRDS(opts$param.file)
+} else {
+    params <- CogapsParams()
+}
+
+params <- setParam(params, "nPatterns", opts$num.patterns)
+params <- setParam(params, "nIterations", opts$num.iterations)
 
 if (!is.null(params@distributed))
-    opts$n.threads <- 1
+    opts$num.nhreads <- 1
 
 gapsResult <- CoGAPS(data=opts$data.file, params=params,
-    nThreads=opts$n.threads, transposeData=opts$transpose.data)
+    nThreads=opts$num.threads, transposeData=opts$transpose.data)
 print(gapsResult)
 saveRDS(gapsResult, file=paste(opts$output.file, "rds", sep="."))

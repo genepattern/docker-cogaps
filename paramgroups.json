@@ -1,5 +1,7 @@
 [{name: "Basic Parameters", 
-  parameters: ["input.file", "output.file", "param.file", "n.patterns"]}, 
+  parameters: ["data.file", "output.file", "num.patterns", "num.iterations"]}, 
+ {name: "Parameter File", hidden:true,
+  parameters: ["param.file"]},
  {name: "Miscellaneous", hidden:true, 
-  parameters: ["transpose.data", "n.threads", "github.tag"]}
+  parameters: ["transpose.data", "num.threads", "github.tag"]}
 ]
