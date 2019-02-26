@@ -27,6 +27,7 @@ declare -a tests=(
 
 for tst in "${tests[@]}"
 do
-    docker run -v $LOCAL_DIR:$LOCAL_DIR -t cogaps_module $tst
+    #docker run -v $LOCAL_DIR:$LOCAL_DIR -t cogaps_module $tst
+    echo $tst
 done
 
