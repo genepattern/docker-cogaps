@@ -14,7 +14,7 @@ language=any
 minGenePatternVersion=3.9.13
 name=CoGAPS
 os=any
-job.docker.image=genepattern/docker-cogaps:v0.6a
+job.docker.image=genepattern/docker-cogaps:v0.8
 job.cpuCount=8
 job.memory=32 Gb
 job.walltime: "36:00:00"
