@@ -7,7 +7,7 @@ COMMAND_LINE="Rscript --no-save --quiet --slave --no-restore    /usr/local/bin/c
 
 
 echo $COMMAND_LINE
-docker run -v $LOCAL_DIR:$LOCAL_DIR -w $LOCAL_DIR/Job_3113 -t genepattern/docker-cogaps:v0.6a $COMMAND_LINE
+docker run -v $LOCAL_DIR:$LOCAL_DIR -w $LOCAL_DIR/Job_3113 -t genepattern/docker-cogaps:0.9 $COMMAND_LINE
 
 
 
