@@ -45,6 +45,8 @@ opt <- parse_args(OptionParser(option_list=option_list),
 print(opt)
 opts <- opt$options
 
+filename <- opts$data.file
+
 if (!is.null(opts$github.tag)) {
     print(paste("Trying to load a new CoGAPS version from github", opts$github.tag))
     BiocManager::install("FertigLab/CoGAPS", ask=FALSE, ref=opts$github.tag)
@@ -58,6 +60,26 @@ if (!is.null(opts$param.file)) {
 } else {
     params <- CogapsParams()
 }
+print(paste("Filename is ", filename))
+if (endsWith(tolower(filename), ".robj")){
+    suppressMessages(suppressWarnings(library(Seurat)))
+    suppressMessages(suppressWarnings(library(Matrix)))
+
+    # assumes just one object in the file 
+    env = new.env()
+    matName <- load(filename, env, verbose=TRUE)[1]	
+    mat <- env[[matName]]
+    print("B")
+    
+    datMat2<-log2(as.matrix(GetAssayData(mat,assay="RNA",slot="counts"))+1)
+    sparse.mat <- Matrix(datMat2, sparse = T)
+    writeMM(obj = sparse.mat, file="./mat.mtx")
+    geneNames<-rownames(sparse.mat)
+    cellNames<-colnames(sparse.mat)
+    params <- setParam(params, "geneNames", geneNames)
+    params <- setParam(params, "sampleNames", cellNames)
+    filename = "./mat.mtx"
+}
 
 params <- setParam(params, "nPatterns", opts$num.patterns)
 params <- setParam(params, "nIterations", opts$num.iterations)
@@ -65,7 +87,7 @@ params <- setParam(params, "nIterations", opts$num.iterations)
 if (!is.null(params@distributed))
     opts$num.threads <- 1
 
-gapsResult <- CoGAPS(data=opts$data.file, params=params,
+gapsResult <- CoGAPS(data=filename, params=params,
     nThreads=opts$num.threads, transposeData=opts$transpose.data)
 print(gapsResult)
 saveRDS(gapsResult, file=paste(opts$output.file, "rds", sep="."))

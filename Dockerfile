@@ -64,6 +64,12 @@ RUN echo "force rebuild 4" && \
     R -e 'BiocManager::install("FertigLab/CoGAPS", dependencies=FALSE)' && \
     R -e 'packageVersion("CoGAPS")'
 
+# install seurat and seuratwrapper to manage conversion of seurat objects
+RUN R -e 'BiocManager::install("Seurat")'
+RUN R -e 'BiocManager::install("SeuratWrapper")'
+
+
+
 # the module files are set into /usr/local/bin/cogaps
 ENV PATH "$PATH:/usr/local/bin/cogaps"
 COPY src/* /usr/local/bin/cogaps/

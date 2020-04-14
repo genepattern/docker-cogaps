@@ -2,7 +2,7 @@
 #CoGAPS
 #Mon Jun 18 21:02:09 UTC 2018
 JVMLevel=
-LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.99
+LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.91.1
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
 commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --data.file\=<data.file>  --output.file\=<output.file> <param.file> --num.patterns\=<num.patterns> --transpose.data\=<transpose.data> --num.threads=<job.cpuCount> <github.tag> --num.iterations=<num.iterations>
@@ -14,10 +14,10 @@ language=any
 minGenePatternVersion=3.9.13
 name=CoGAPS
 os=any
-job.docker.image=genepattern/docker-cogaps:v0.9
+job.docker.image=genepattern/docker-cogaps:v0.10
 job.cpuCount=8
 job.memory=32 Gb
-job.walltime: "36:00:00"
+job.walltime=54\:00\:00
 
 p1_MODE=IN
 p1_TYPE=FILE
