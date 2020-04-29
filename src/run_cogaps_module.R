@@ -61,15 +61,18 @@ if (!is.null(opts$param.file)) {
     params <- CogapsParams()
 }
 print(paste("Filename is ", filename))
-if (endsWith(tolower(filename), ".robj")){
+if (endsWith(tolower(filename), ".robj") || endsWith(tolower(filename), ".rds") || endsWith(tolower(filename), ".rdata")){
     suppressMessages(suppressWarnings(library(Seurat)))
     suppressMessages(suppressWarnings(library(Matrix)))
 
-    # assumes just one object in the file 
-    env = new.env()
-    matName <- load(filename, env, verbose=TRUE)[1]	
-    mat <- env[[matName]]
-    print("B")
+    if endsWith(tolower(filename), ".rds") {
+        mat <- readRDS(opts$input.seurat.rds.file)
+    } else { 
+        # assumes just one object in the file 
+        env = new.env()
+        matName <- load(filename, env, verbose=TRUE)[1]	
+        mat <- env[[matName]]
+    }
     
     datMat2<-log2(as.matrix(GetAssayData(mat,assay="RNA",slot="counts"))+1)
     sparse.mat <- Matrix(datMat2, sparse = T)
