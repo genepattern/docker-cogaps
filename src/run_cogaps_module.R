@@ -65,8 +65,8 @@ if (endsWith(tolower(filename), ".robj") || endsWith(tolower(filename), ".rds") 
     suppressMessages(suppressWarnings(library(Seurat)))
     suppressMessages(suppressWarnings(library(Matrix)))
 
-    if endsWith(tolower(filename), ".rds") {
-        mat <- readRDS(opts$input.seurat.rds.file)
+    if (endsWith(tolower(filename), ".rds")) {
+        mat <- readRDS(filename)
     } else { 
         # assumes just one object in the file 
         env = new.env()
