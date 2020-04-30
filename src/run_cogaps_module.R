@@ -30,7 +30,7 @@ arguments <- commandArgs(trailingOnly=TRUE)
 option_list <- list(
     make_option("--data.file", dest="data.file"),
     make_option("--output.file", dest="output.file"),
-    make_option("--num.patterns", type="integer", dest="num.patterns"),
+    make_option("--num.patterns", type="integer", dest="num.patterns", default=0),
     make_option("--num.iterations", type="integer", dest="num.iterations", default=50000),
     make_option("--param.file", dest="param.file", default=NULL),
     make_option("--transpose.data", type="logical", dest="transpose.data", default=FALSE),
@@ -83,8 +83,11 @@ if (endsWith(tolower(filename), ".robj") || endsWith(tolower(filename), ".rds") 
     params <- setParam(params, "sampleNames", cellNames)
     filename = "./mat.mtx"
 }
-
-params <- setParam(params, "nPatterns", opts$num.patterns)
+if (!is.null(opts$num.patterns)){
+    if (opts$num.patterns > 0) {
+        params <- setParam(params, "nPatterns", opts$num.patterns)
+    }
+}
 params <- setParam(params, "nIterations", opts$num.iterations)
 
 if (!is.null(params@distributed))

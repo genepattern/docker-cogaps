@@ -5,7 +5,7 @@ JVMLevel=
 LSID=urn\:lsid\:broad.mit.edu\:cancer.software.genepattern.module.analysis\:00376:0.91.1
 author=Ted Liefeld, UCSD School of Medicine.
 categories=Tutorial
-commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --data.file\=<data.file>  --output.file\=<output.file> <param.file> --num.patterns\=<num.patterns> --transpose.data\=<transpose.data> --num.threads=<job.cpuCount> <github.tag> --num.iterations=<num.iterations>
+commandLine=/usr/bin/Rscript --no-save --quiet --slave --no-restore /usr/local/bin/cogaps/run_cogaps_module.R  --data.file\=<data.file>  --output.file\=<output.file> <param.file> <num.patterns> --transpose.data\=<transpose.data> --num.threads=<job.cpuCount> <github.tag> --num.iterations=<num.iterations>
 
 cpuType=any
 description=Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity. It can be used to perform sparse matrix factorization on any data, and when this data represents biomolecules, to do gene set analysis.
@@ -14,7 +14,7 @@ language=any
 minGenePatternVersion=3.9.13
 name=CoGAPS
 os=any
-job.docker.image=genepattern/docker-cogaps:v0.11
+job.docker.image=genepattern/docker-cogaps:v0.12
 job.cpuCount=8
 job.memory=32 Gb
 job.walltime=54\:00\:00
@@ -49,15 +49,15 @@ p2_value=
 
 p3_MODE=
 p3_TYPE=TEXT
-p3_default_value=25
+p3_default_value=
 p3_description=Number of Patterns
 p3_fileFormat=
 p3_flag=
 p3_name=num.patterns
-p3_numValues=1..1
-p3_optional=
+p3_numValues=0..1
+p3_optional=on
 p3_prefix=
-p3_prefix_when_specified=
+p3_prefix_when_specified=--num.patterns\=
 p3_type=java.lang.String
 p3_value=
 
